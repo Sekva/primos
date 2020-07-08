@@ -1,10 +1,15 @@
 #include "global.hpp"
-extern std::vector<unsigned long> primos;
+extern std::vector<unsigned long> primos_p;
+extern std::vector<unsigned long> primos_q;
 
 void problema_5() {
   printf("Rodando problema_5... Problema de Goldbach\n");
 
-  unsigned long p, q  ;
+  printf("Ainda não feito com 2 arquivos, parando...\n");
+  return;
+  std::vector<unsigned long> primos;
+
+  unsigned long p, q;
   unsigned long tamanho_vetor = primos.size();
   unsigned long comecar_da_posicao = 0;
   unsigned long max_par_achado = 6;

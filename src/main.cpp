@@ -5,19 +5,33 @@ void nop(void) {
   printf("nop\n");
 }
 
-std::vector<unsigned long> primos;
+std::vector<unsigned long> primos_p;
+std::vector<unsigned long> primos_q;
 
-void carregar_primos(const char* nome_arquivo)  {
-  printf("Carregando lista de primos...\n");
+void carregar_primos_p(const char* nome_arquivo)  {
+  printf("Carregando lista de primos para p...\n");
   std::ifstream infile(nome_arquivo);
   std::string line;
   while (std::getline(infile, line)) {
     std::istringstream iss(line);
     unsigned long v;
     if (!(iss >> v)) { break; }
-    primos.push_back(v);
+    primos_p.push_back(v);
   }
-  printf("São %ld primos\n", primos.size());
+  printf("São %ld primos p\n", primos_p.size());
+}
+
+void carregar_primos_q(const char* nome_arquivo)  {
+  printf("Carregando lista de primos para q...\n");
+  std::ifstream infile(nome_arquivo);
+  std::string line;
+  while (std::getline(infile, line)) {
+    std::istringstream iss(line);
+    unsigned long v;
+    if (!(iss >> v)) { break; }
+    primos_q.push_back(v);
+  }
+  printf("São %ld primos q\n", primos_q.size());
 }
 
 int main(int argc, char** argv) {
@@ -49,9 +63,10 @@ int main(int argc, char** argv) {
   }
 
   if(argv[0]) {
-    carregar_primos(argv[0]);
+    carregar_primos_p(argv[0]);
+    carregar_primos_q(argv[1]);
   } else {
-    printf("Passe o arquivo com os numeros\n");
+    printf("Passe 2 arquivos com os numeros\n");
     return 1;
   }
 
