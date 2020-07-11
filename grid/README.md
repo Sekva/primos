@@ -1,5 +1,5 @@
-# GRID - Sistemas Distribuidos
-#### Repositório referente a disciplina de Sistemas Distribuídos. Para desenvolvimento de um GRID de processamento.
+# GRID - Processamento em Larga Escala
+#### Pequena documentação para instalação do grid. É exigido algum domínio de comandos do linux e conhecimento prévio de algumas tecnologias, como servidor apache, php, banco de dados, etc.
 
 ---
 
