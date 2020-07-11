@@ -44,18 +44,18 @@ mysql -u root -p
 - Substitua 'nome' por o nome do seu banco de dados.
 
 ```bash
-MariaDB [(none)]> CREATE DATABASE laravel;
-MariaDB [(none)]> CREATE USER 'nome'@'localhost' IDENTIFIED BY 'nome';
-MariaDB [(none)]> GRANT ALL PRIVILEGES ON laravel.* TO 'nome'@'localhost';
+MariaDB [(none)]> CREATE DATABASE nomeExemplo_db;
+MariaDB [(none)]> CREATE USER 'nomeExemplo_user'@'localhost' IDENTIFIED BY 'nomeExemplo_pass';
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON nomeExemplo_db.* TO 'nomeExemplo_user'@'localhost';
 MariaDB [(none)]> FLUSH PRIVILEGES;
 MariaDB [(none)]> quit
 ```
 
-- Após isso, faça uma cópia do arquivo '.env.example' com o nome '.env' para a pasta do projeto.
+- Após isso, faça uma cópia do arquivo '.env.example' com o nome '.env' para a **pasta do projeto.**
 
 Colocando as suas respectivas informações, como mostrado no exemplo ('.env.example')
 
->Nota: O arquivo .env ficará dentro da pasta dos projeto. Ou seja, cada projeto terá seu próprio .env, possibilitando assim o uso de vários bancos de dados.
+> Nota: O arquivo .env ficará dentro da pasta dos projeto. Ou seja, cada projeto terá seu próprio .env, possibilitando assim o uso de vários bancos de dados.
 
 > Para partir para a próxima etapa, a etapa um é pré requisito.
 
@@ -67,7 +67,7 @@ Aqui, exitem duas formas de fazer isso.
 cd /var/www/
 sudo ln -s <Diretorio da pasta do servidor> ./grid/
 ```
-Após isso, é preciso configurar o apache para redirecionar para essa pasta, ao invés da html. Para isso, mude o 'DocumentRoot' do arquivo:
+Após isso, é preciso configurar o apache para redirecionar para essa pasta, ao invés da /var/www/html. Para isso, mude o 'DocumentRoot' do arquivo:
 /etc/apache2/sites-available/000-default.conf, ficando da seguinte forma:
 
     -> DocumentRoot /var/www/html/grid
@@ -79,7 +79,7 @@ php -S localhost:8000
 
    > Nota: Para acessar o servidor, basta ir até http://localhost:8000
 
-> Nota: Recomenda-se fortemente a utilização do servidor web apache2. Pois testes foram feitos e houveram comportamentos indevidos quanto as rotas dos links e outras coisas.
+> Nota: Recomenda-se fortemente a utilização do servidor web apache2. Pois testes foram feitos e houveram comportamentos indevidos quanto as rotas dos links e outras coisas. Além de ele suportar erros que o simples servidor php não suporta e fecha.
 
 > Para partir para a próxima etapa, a etapa dois é pré requisito.
 
