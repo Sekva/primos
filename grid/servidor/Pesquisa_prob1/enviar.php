@@ -24,7 +24,7 @@
 
             // Se achou uma solução
             $resposta = $_POST["resposta"];
-            if($resposta) {
+            if($resposta == 'true') {
                 $p = $_POST["p"];
                 $q = $_POST["q"];
                 $res_calc = $_POST["resultado_calculo"];

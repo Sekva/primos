@@ -116,6 +116,45 @@
 
         }
 
+        public static function getTrabalhoLivre() {
+            $connect = parent::dbConnect();
+
+            $ran = rand(1, Configurar::$randAttProcAdormecidos);
+            if($ran == 1) {
+                // Atualizar processos adormecidor (cliente parou antes de terminar)
+                self::varrerEAtualizarProcessos();
+            }
+
+            // Lista ordenada dos N processos mais antigos
+            $sql = "SELECT id, valor_inicial_p, valor_inicial_q, k FROM pesquisa.trabalhos_prob1 WHERE status=0 ORDER BY tempo_ultima_vez_requisitado LIMIT " . Configurar::$quantProxProcParaRandomizar;
+
+            $resultado = $connect->query($sql);
+
+            parent::dbDisconect($connect);
+
+            if ($resultado->num_rows > 0) {
+                // Randomização da escolha entre a lista de processos mais antigos
+                // Para evitar (mesmo que bastante raro) o duplo processamento
+                $escolhaRandomica = rand(1, $resultado->num_rows);
+                $count = 1;
+                while($count <= $resultado->num_rows) {
+                    $row = $resultado->fetch_assoc();
+                    if($count == $escolhaRandomica) {
+                        $resultado = $row;
+                        break;
+                    }
+                    $count = $count + 1;
+                }
+
+            } else {
+                $msg = "Location: ./error.php?msg=";
+                $msg = $msg . "Nao foi possivel requisitar uma nova configuração, não foi encontrado trabalho.";
+                header($msg);
+            }
+
+            return $resultado;
+        }
+
         public static function attStatusProcesso($id, $status) {
 
             $connect = parent::dbConnect();
@@ -127,7 +166,6 @@
                 $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id;
             }
             $resultado = $connect->query($sql);
-
             if($resultado == FALSE) {
                 require_once 'error.php';
                 $msg = "Location: ./error.php?msg=";
@@ -157,7 +195,21 @@
             parent::dbDisconect($connect);
         }
 
+        public static function varrerEAtualizarProcessos() {
+            $connect = parent::dbConnect();
 
+            $time = time();
+            $tempoLimiteProcessoAdormecido = $time - Configurar::$tempoProcessoAdormecido;
+            // Atualiza processos adormecidos
+            $sql = "UPDATE processosMecanica
+            SET processando=0
+            WHERE processando=1
+            AND timeUltimaVezRequisitado <= " . $tempoLimiteProcessoAdormecido;
+            $resultado = $connect->query($sql);
+
+            parent::dbDisconect($connect);
+
+        }
 
     }
 
