@@ -116,6 +116,49 @@
 
         }
 
+        public static function attStatusProcesso($id, $status) {
+
+            $connect = parent::dbConnect();
+
+            // Att status
+            if($status = 1) { // status = processando, logo, atualiza o tempo de requisicao
+                $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . ", tempo_ultima_vez_requisitado=" . time() . " WHERE id=" . $id;
+            } else {
+                $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id;
+            }
+            $resultado = $connect->query($sql);
+
+            if($resultado == FALSE) {
+                require_once 'error.php';
+                $msg = "Location: ./error.php?msg=";
+                $msg = $msg . "Error: Ao atualizar status [error: 293872]";
+                header($msg);
+            }
+
+            parent::dbDisconect($connect);
+        }
+
+
+        public static function addResposta($p, $q, $res_calc) {
+
+            $connect = parent::dbConnect();
+
+            // Add resposta
+            $sql = "INSERT INTO pesquisa.resultados_prob1 (p, q, resultado_calculo) VALUES (" . $p . ", " . $q . ", " . $res_calc . ")";
+            $resultado = $connect->query($sql);
+
+            if($resultado == FALSE) {
+                require_once 'error.php';
+                $msg = "Location: ./error.php?msg=";
+                $msg = $msg . "Error: Ao adicionar um novo resultado [error: 237623]";
+                header($msg);
+            }
+
+            parent::dbDisconect($connect);
+        }
+
+
+
     }
 
 ?>
