@@ -26,13 +26,14 @@
 
             $connect = parent::dbConnect();
 
-            $count_ps_add = 0;
+            $count_ps_add = 0; // quantidade de p's já adicionados
             $aux_p = 0;
             $aux_q = 0;
             while($count_ps_add < $quant_ps_add) {
 
                 // Para evitar ficar requisitando ao banco de dados
-                // o ultimo processo salvo toda vez que for add um
+                // o ultimo processo salvo toda vez que for add um;
+                // -> Só vai requisitar na primeira iteração
                 if($count_ps_add == 0) {
 
                     // Seleciona o ultimo processo adicionado
@@ -40,15 +41,8 @@
                         FROM pesquisa.trabalhos_prob1
                         ORDER BY id DESC
                         LIMIT 1";
+
                     $resultado = $connect->query($sql);
-
-                    if($resultado == FALSE) {
-                        require_once 'error.php';
-                        $msg = "Location: ./error.php?msg=";
-                        $msg = $msg . "Error: Nenhum processo foi encontrado";
-                        header($msg);
-                    }
-
                     $resultado = $resultado->fetch_assoc(); // Pega o primeiro
 
                     if($resultado != FALSE) {
@@ -60,7 +54,7 @@
                         // Caso em que no banco não tem nenhum dado
                         $ultimo_valor_p = -1; // Aqui será somado 1 mais em baixo
                         $ultimo_valor_q = -1; // Esse valor será sobreposto mais em baixo
-                        $ultimo_valor_k = $k_atual2;
+                        $ultimo_valor_k = $k_atual;
                     }
 
                 } else {
@@ -101,7 +95,7 @@
                     (status, valor_inicial_p, valor_inicial_q, k,
                     tempo_ultima_vez_requisitado)
                     VALUES (0, " . $valor_inicial_p . ", " . $valor_inicial_q . "
-                    , " . $k_atual . ", '2020-01-01 00:00:00')";
+                    , " . $k_atual . ", '0')";
 
                 if ($connect->query($sql) === FALSE) {
                     require_once 'error.php';
@@ -113,7 +107,6 @@
             }
 
             parent::dbDisconect($connect);
-
         }
 
         public static function getTrabalhoLivre() {
@@ -155,6 +148,7 @@
             return $resultado;
         }
 
+        // Atualiza o status do processo
         public static function attStatusProcesso($id, $status) {
 
             $connect = parent::dbConnect();
@@ -162,10 +156,17 @@
             // Att status
             if($status = 1) { // status = processando, logo, atualiza o tempo de requisicao
                 $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . ", tempo_ultima_vez_requisitado=" . time() . " WHERE id=" . $id;
+            } else if($status = 3) { // Quando terminar por completo o processamento do trabalho
+                // Só atualiza pra concluído se o processo foi executado no tempo correto (antes do seu vencimento)
+                $time = time();
+                $tempoLimiteProcessoAdormecido = $time - Configurar::$tempoProcessoAdormecido;
+                $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id . " AND tempo_ultima_vez_requisitado <= " . $tempoLimiteProcessoAdormecido;
             } else {
                 $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id;
             }
+
             $resultado = $connect->query($sql);
+
             if($resultado == FALSE) {
                 require_once 'error.php';
                 $msg = "Location: ./error.php?msg=";
@@ -176,7 +177,7 @@
             parent::dbDisconect($connect);
         }
 
-
+        // Adiciona uma resposta
         public static function addResposta($p, $q, $res_calc) {
 
             $connect = parent::dbConnect();
@@ -195,21 +196,29 @@
             parent::dbDisconect($connect);
         }
 
+        // Atualiza os processos adormecidos
         public static function varrerEAtualizarProcessos() {
             $connect = parent::dbConnect();
 
             $time = time();
             $tempoLimiteProcessoAdormecido = $time - Configurar::$tempoProcessoAdormecido;
             // Atualiza processos adormecidos
-            $sql = "UPDATE processosMecanica
-            SET processando=0
+            $sql = "UPDATE pesquisa.trabalhos_prob1
+            SET status=0
             WHERE processando=1
-            AND timeUltimaVezRequisitado <= " . $tempoLimiteProcessoAdormecido;
+            AND tempo_ultima_vez_requisitado <= " . $tempoLimiteProcessoAdormecido;
             $resultado = $connect->query($sql);
 
-            parent::dbDisconect($connect);
+            if($resultado == FALSE) {
+                require_once 'error.php';
+                $msg = "Location: ./error.php?msg=";
+                $msg = $msg . "Error: Ao atualizar processos adormecidos [error: 382722]";
+                header($msg);
+            }
 
+            parent::dbDisconect($connect);
         }
+
 
     }
 

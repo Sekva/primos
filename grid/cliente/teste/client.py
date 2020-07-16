@@ -2,7 +2,7 @@
 # status:
 #   0 = livre
 #   1 = Está processando
-#   2 = Está ausente (nao usar por agora)
+#       2 = Está ausente (nao usar por agora)
 #   3 = Terminado
 
 
@@ -44,11 +44,8 @@ resultadoAttStatus = requests.post(url, data = conteudoEnvio)
 
 # Att status e envia resposta
 '''
-print("Abrindo escopo envio resposta")
 url = url_global + 'Pesquisa_prob1/enviar.php'
 # Status processando = 1
 conteudoEnvio = {'atualizarStatus': '', 'id': 46587, 'status':'3', 'resposta':'true', 'p':'3', 'q':'7', 'resultado_calculo':'121'}
 resultadoEnvioResposta = requests.post(url, data = conteudoEnvio)
-print(resultadoEnvioResposta.text)
-print("Fechando escopo envio resposta")
 '''
