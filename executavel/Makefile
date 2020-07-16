@@ -3,20 +3,22 @@ LIBFLAGS= -lm
 SRC_DIR = ./src/
 OBJETOS_DIR = ./obj/
 BUILD_DIR = ./build/
-SRCS = main.cpp \
-	global.cpp \
-	problema_1.cpp \
-	problema_2.cpp \
-	problema_3.cpp \
-	problema_4.cpp \
-	problema_5.cpp \
-	problema_6.cpp \
-	problema_7.cpp
+#SRCS = main.cpp \
+#       global.cpp \
+#       problema_1.cpp \
+#       problema_2.cpp \
+#       problema_3.cpp \
+#       problema_4.cpp \
+#       problema_5.cpp \
+#       problema_6.cpp \
+#       problema_7.cpp
+
+SRCS := $(shell ls src/*.cpp | cut -d '/' -f2)
 
 BIN_NOME = tqp_win
 OBJS = $(SRCS:.cpp=.o)
 OBJS_FINAL = $(OBJS:%.o=$(OBJETOS_DIR)%.o)
-BIN = $(BUILD_DIR)$(BIN_NOME)
+	BIN = $(BUILD_DIR)$(BIN_NOME)
 
 all : $(BIN)
 

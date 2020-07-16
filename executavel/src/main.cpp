@@ -1,42 +1,28 @@
 #include "main.hpp"
 #include "global.hpp"
 
-void nop(void) {
+void nop(Num _a, Num _b, Num _c, Num _d) {
   printf("nop\n");
 }
 
-std::vector<unsigned long> primos_p;
-std::vector<unsigned long> primos_q;
+std::vector<unsigned long> primos;
 
-void carregar_primos_p(const char* nome_arquivo)  {
-  printf("Carregando lista de primos para p...\n");
+void carregar_primos(const char* nome_arquivo)  {
+  printf("Carregando lista de primos...\n");
   std::ifstream infile(nome_arquivo);
   std::string line;
   while (std::getline(infile, line)) {
     std::istringstream iss(line);
     unsigned long v;
     if (!(iss >> v)) { break; }
-    primos_p.push_back(v);
+    primos.push_back(v);
   }
-  printf("São %ld primos p\n", primos_p.size());
-}
-
-void carregar_primos_q(const char* nome_arquivo)  {
-  printf("Carregando lista de primos para q...\n");
-  std::ifstream infile(nome_arquivo);
-  std::string line;
-  while (std::getline(infile, line)) {
-    std::istringstream iss(line);
-    unsigned long v;
-    if (!(iss >> v)) { break; }
-    primos_q.push_back(v);
-  }
-  printf("São %ld primos q\n", primos_q.size());
+  printf("São %ld primos q\n", primos.size());
 }
 
 int main(int argc, char** argv) {
   argc--; argv++;
-  void (*funcao)(void) = &nop;
+  void (*funcao)(Num, Num, Num, Num) = &nop;
 
   // escolher a funcao problema
   printf("Escolha o problema:\n");
@@ -63,15 +49,18 @@ int main(int argc, char** argv) {
   }
 
   if(argv[0]) {
-    carregar_primos_p(argv[0]);
-    carregar_primos_q(argv[1]);
+    carregar_primos(argv[0]);
   } else {
-    printf("Passe 2 arquivos com os numeros\n");
+    printf("Passe 1 arquivo com os numeros\n");
     return 1;
   }
 
+  Num indice_min_p = 0;
+  Num indice_max_p = 0;
+  Num indice_min_q = 0;
+  Num indice_max_q = 0;
 
-  funcao();
+  funcao(indice_min_p, indice_max_p, indice_min_q, indice_max_q);
   return 0;
 
 }
