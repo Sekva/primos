@@ -1,4 +1,4 @@
-CC = g++ -static -Wall -s -O3
+CC = g++ -Wall -O3 -fPIC -g
 LIBFLAGS= -lm
 SRC_DIR = ./src/
 OBJETOS_DIR = ./obj/
@@ -15,7 +15,7 @@ BUILD_DIR = ./build/
 
 SRCS := $(shell ls src/*.cpp | cut -d '/' -f2)
 
-BIN_NOME = tqp_win
+BIN_NOME = libtqp.so
 OBJS = $(SRCS:.cpp=.o)
 OBJS_FINAL = $(OBJS:%.o=$(OBJETOS_DIR)%.o)
 	BIN = $(BUILD_DIR)$(BIN_NOME)
@@ -23,7 +23,7 @@ OBJS_FINAL = $(OBJS:%.o=$(OBJETOS_DIR)%.o)
 all : $(BIN)
 
 $(BIN) : $(OBJS_FINAL)
-	$(CC) $(OBJS_FINAL) -o $(BIN) $(LIBFLAGS)
+	$(CC) -shared $(OBJS_FINAL) -o $(BIN) $(LIBFLAGS)
 
 $(OBJS_FINAL) : $(OBJETOS_DIR)%.o : $(SRC_DIR)%.cpp
 	$(CC) -c $< -o $@
