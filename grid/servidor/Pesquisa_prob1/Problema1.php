@@ -225,10 +225,7 @@
             $time = time();
             $tempoLimiteProcessoAdormecido = $time - Configurar::$tempoProcessoAdormecido;
             // Atualiza processos adormecidos
-            $sql = "UPDATE pesquisa.trabalhos_prob1
-            SET status=0
-            WHERE processando=1
-            AND tempo_ultima_vez_requisitado <= " . $tempoLimiteProcessoAdormecido;
+            $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=0 WHERE status=1 AND tempo_ultima_vez_requisitado <= " . $tempoLimiteProcessoAdormecido;
             $resultado = $connect->query($sql);
 
             if($resultado == FALSE) {
