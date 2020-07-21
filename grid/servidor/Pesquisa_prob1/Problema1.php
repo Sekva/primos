@@ -196,6 +196,28 @@
             parent::dbDisconect($connect);
         }
 
+
+        // Retorna todas as respostas
+        public static function getResultados() {
+
+            $connect = parent::dbConnect();
+
+            // Coleta as respostas
+            $sql = "SELECT * FROM pesquisa.resultados_prob1";
+            $resultado = $connect->query($sql);
+
+            if($resultado == FALSE) {
+                require_once 'error.php';
+                $msg = "Location: ./error.php?msg=";
+                $msg = $msg . "Error: Ao adicionar um novo resultado [error: 237623]";
+                header($msg);
+            }
+
+            parent::dbDisconect($connect);
+
+            return $resultado;
+        }
+
         // Atualiza os processos adormecidos
         public static function varrerEAtualizarProcessos() {
             $connect = parent::dbConnect();
