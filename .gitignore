@@ -3,3 +3,6 @@ obj/
 listas/
 ./*
 !./Makefile
+
+
+.env
