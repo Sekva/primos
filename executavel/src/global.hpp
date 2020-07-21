@@ -9,6 +9,8 @@
 #include <fstream>
 #include <vector>
 
+#define Num unsigned long
+
 int e_primo(unsigned long n);
 
 unsigned long e_quadrado_perfeito(unsigned long num);
