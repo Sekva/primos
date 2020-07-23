@@ -12,9 +12,11 @@ nomeCliente = "user"
 
 
 url_global = "http://localhost:8000/"
+
+id_prob = 1
 url_nome_prob = "Pesquisa_prob1/"
 
-# [codigo, Nome_pequeno_do_prob, url_name_prob, id_no_executavel]
+# [codigo, Nome_pequeno_do_prob, url_nome_prob, id_no_executavel]
 nomes_prob = [
     [1, "Nome Pequeno 1", "Pesquisa_prob1", 0],
     [2, "Nome Pequeno 2", "Pesquisa_prob2", 1],
@@ -23,7 +25,7 @@ nomes_prob = [
 
 n_processamentos = 0
 ja_processado = 0
-processamento_contado = False
+processamento_contador = False
 
 
 printar = True
@@ -45,134 +47,27 @@ def verificarAtualizacao():
             print("Versão atualizada desse programa: " + resultadoGetVersao + ";\n")
             exit()
 
-def processar(resultado, thread_num):
-    global printar
-    if printar: print("Processando...");
-
-    a = []
-    a = resultado.json()
-    b = dict(a[4])
-
-    url = url_global + url_nome_prob +'enviar.php'
-    conteudoEnvio = {'atualizacaoProcessando': '', 'id': a[1]}
-    resultadoAttProcessando = requests.post(url, data = conteudoEnvio)
-    # print(resultadoAttProcessando.text)
-
-    # TODO: Mudar nome de arquivo para um randômico e passar como parâmetro para programa
-
-    # Escreve em arquivo a quantidade de corpos, iteracoes e as suas coordenadas
-    nome_arquivo = "saida_" + str(thread_num) + ".saida"
-    file = open(nome_arquivo,"w+")
-
-    # TODO: @mecanica Mostrar tempo processando aquele processo
-    # TODO: @mecanica Apagar arquivo de saida após uso (NO COMPILADO)
-    #           Atualmente isso está sendo feito no .py, mas n funciona como deveria
-
-    file.write(str(a[2][0]) + " "  + str(a[3][0]))
-    for i in b.values():
-        file.write("\n")
-        file.write(str(i[0]))
-        file.write(" ")
-        file.write(str(i[1]))
-
-    # Consumir tempo para fechar o arquivo
-    for i in range(1000):
-        i = i
-
-    file.close()
-
-    re = subprocess.check_output(["./a.out", str(thread_num)])
-
-
-    # Consumir tempo para apagar arquivo
-    for i in range(10000):
-        i = i
-
-    if os.path.isfile(nome_arquivo):
-        os.remove(nome_arquivo)
-
-
-
-    # Trata a saida do arquivo compilado
-    reSplit = str(re).split("\\n")
-    # print(reSplit)
-    reSplit[0] = reSplit[0][2::]
-    reSplit.pop()
-    if printar: print("Dados processados:");
-    for i in reSplit:
-        if printar: print(i)
-
-
-    count = 1
-    novasCoordenadas = "{"
-    for i in reSplit:
-        aux = i.split(', ')
-        novasCoordenadas = str(novasCoordenadas) + "\"" + str(count) + "\":["
-        novasCoordenadas = str(novasCoordenadas) + str(aux[0]) + "," + str(aux[1]) + "]"
-        if(count < len(reSplit)):
-            novasCoordenadas = str(novasCoordenadas) + ","
-        count += 1
-
-
-    novasCoordenadas = str(novasCoordenadas) +  "}"
-    # print(novasCoordenadas)
-
-    url = url_global + url_nome_prob +'enviar.php'
-    conteudoEnviar = {'novosDadosProcessados': '', 'id': a[1], 'novasCoordenadas': novasCoordenadas, 'nomeCliente': str(nomeCliente)}
-    resultadoAttProcessando = requests.post(url, data = conteudoEnviar)
-    if printar: print(resultadoAttProcessando.text)
-
 
 def proc_start(thread_num):
-
     global ja_processado
     while True:
-
-        if processamento_contado:
+        if processamento_contador:
             if ja_processado >= n_processamentos:
                 exit()
 
         verificarAtualizacao()
 
-        url = url_global + url_nome_prob + 'requisitar.php'
+        resultado_processamento = False
+        if(id_prob = 1):
+            resultado_processamento = trabalhar_prob1(url_global + url_nome_prob)
+        elif(id_prob = 2):
+            print("tabalhar_prob2()")
 
-        resultado = requests.post(url)
-
-        if(resultado.text[4] == "o" and resultado.text[5] == "k"):
-            if printar:
-                if printar: print("\nRequisitando um novo Processo! thread " + str(thread_num))
-                time.sleep(1/2)
-                print("[    ]", end="\r")
-                time.sleep(1/3)
-                print("[.   ]", end="\r")
-                time.sleep(1/3)
-                print("[..  ]", end="\r")
-                time.sleep(1/3)
-                print("[... ]", end="\r")
-                time.sleep(1/2)
-                print("[....]")
-                time.sleep(1/2)
-            else:
-                time.sleep(5/2)
-            processar(resultado, thread_num)
-
-            ja_processado = ja_processado + 1
-
+        if(!resultado_processamento):
+            print("Erro ao tentar processar. Tentando novamente em 3 segundos")
+            time.slee(3)
         else:
-            print("FALHA!", end="\r")
-            time.sleep(1)
-            print("Nenhum dado foi obtido na thread " + str(thread_num) +  ", tentando novamente...")
-            time.sleep(1/2)
-            if printar: print("[    ]", end="\r")
-            time.sleep(1/3)
-            if printar: print("[.   ]", end="\r")
-            time.sleep(1/2)
-            if printar: print("[..  ]", end="\r")
-            time.sleep(1/3)
-            if printar: print("[... ]", end="\r")
-            time.sleep(1/2)
-            if printar: print("[....]")
-            time.sleep(1/2)
+            ja_processado += 1
 
 
 # ---------------------------------------------------
@@ -222,7 +117,7 @@ for i in range(len(sys.argv)):
         flag = False
         for k in nomes_prob:
             if(str(k[0]) == str(id_prob)):
-                url_name_prob = k[2]
+                url_nome_prob = k[2]
                 print("Você selecionou o problema [" + str(k[1]) + "] para processar!\n")
                 flag = True
                 break
@@ -238,7 +133,7 @@ for i in range(len(sys.argv)):
     if sys.argv[i] == "-n":
         if ((i + 1 < len(sys.argv))) and str(sys.argv[i + 1]).isnumeric():
             n_processamentos = int(sys.argv[i + 1])
-            processamento_contado = True
+            processamento_contador = True
         else:
             print("\nNúmero de processamentos invalido")
             exit()

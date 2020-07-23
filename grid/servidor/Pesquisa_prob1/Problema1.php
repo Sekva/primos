@@ -172,6 +172,8 @@
                 $msg = "Location: ./error.php?msg=";
                 $msg = $msg . "Error: Ao atualizar status [error: 293872]";
                 header($msg);
+            } else {
+                echo "ok";
             }
 
             parent::dbDisconect($connect);

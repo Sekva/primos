@@ -39,8 +39,8 @@ else:
 url = url_global + 'Pesquisa_prob1/enviar.php'
 conteudoEnvio = {'atualizarStatus': '', 'id': '46587', 'status':'1', 'resposta':'false'}
 resultadoAttStatus = requests.post(url, data = conteudoEnvio)
+print(resultadoAttStatus.text[-2:] == 'ok')
 '''
-
 
 # Att status e envia resposta
 '''
