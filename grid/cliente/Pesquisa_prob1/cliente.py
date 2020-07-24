@@ -1,3 +1,5 @@
+#!/bin/python3
+
 
 import requests
 import sys
@@ -58,12 +60,12 @@ def proc_start(thread_num):
         verificarAtualizacao()
 
         resultado_processamento = False
-        if(id_prob = 1):
+        if(id_prob == 1):
             resultado_processamento = trabalhar_prob1(url_global + url_nome_prob)
-        elif(id_prob = 2):
+        elif(id_prob == 2):
             print("tabalhar_prob2()")
 
-        if(!resultado_processamento):
+        if( not resultado_processamento):
             print("Erro ao tentar processar. Tentando novamente em 3 segundos")
             time.slee(3)
         else:

@@ -1,7 +1,7 @@
 #include "global.hpp"
 extern std::vector<unsigned long> primos;
 
-void problema_1(
+char* problema_1(
         unsigned long indice_min_p,
         unsigned long indice_max_p,
         unsigned long indice_min_q,
@@ -9,6 +9,7 @@ void problema_1(
 
 
   printf("Rodando problema_1... (p+q)² + pq == a², a inteiro\n");
+  std::ostringstream stringStream;
 
   unsigned long p, q, resultado;
   for(unsigned long i = indice_min_p; i <= indice_max_p; i++) {
@@ -19,7 +20,11 @@ void problema_1(
       unsigned long a = e_quadrado_perfeito(resultado);
       if(a != 0) { //Se a for 0 é pq resultado não é quadrado perfeito
         printf("p: %ld, q: %ld, a²:%ld, a: %ld\n", p, q, resultado, a);
+        stringStream << p << "/" << q << "/" << resultado;
       }
     }
   }
+
+  std::string str_return = stringStream.str();
+  return strcpy(new char[str_return.length() + 1], str_return.c_str());
 }

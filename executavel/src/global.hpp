@@ -8,6 +8,8 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <iostream>
+#include <cstring>
 
 #define Num unsigned long
 

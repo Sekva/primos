@@ -1,5 +1,6 @@
 import requests
 import time
+from ctypes import *
 
 numero_tentativas_limite = 10
 
@@ -74,6 +75,23 @@ def processar_prob1(url, res_requisitar):
     sucesso_att = enviar_prob1(url, 1, res_requisitar)
     if(sucesso_att == False):
         return False
+
+
+    libtqp = CDLL("./libtqp.so")
+    fn = libtqp._Z4progtPcS_
+    fn.restype = c_char_p
+
+    p = res_requisitar["p"]
+    q = res_requisitar["q"]
+    max_p = int(p) + res_requisitar["k"]
+    max_q = int(q) + res_requisitar["k"]
+
+    args = str(p) + "/" + str(max_p) + "/" str(q) + str(max_q)
+    p = fn(c_short(1), c_char_p(args.encode("utf-8")), c_char_p("../../../listas/arquivinho".encode("utf-8")))
+    print(p)
+    resultado = p
+    exit()
+
 
     ######
     #resultado = chamada do processamento

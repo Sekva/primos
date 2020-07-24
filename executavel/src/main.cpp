@@ -5,6 +5,33 @@ void nop(Num _a, Num _b, Num _c, Num _d) {
   printf("nop\n");
 }
 
+
+std::vector<std::string> explode(const std::string& str, const char& ch) {
+    std::string next;
+    std::vector<std::string> result;
+
+    // For each character in the string
+    for (std::string::const_iterator it = str.begin(); it != str.end(); it++) {
+        // If we've hit the terminal character
+        if (*it == ch) {
+            // If we have some characters accumulated
+            if (!next.empty()) {
+                // Add them to the result vector
+                result.push_back(next);
+                next.clear();
+            }
+        } else {
+            // Accumulate the next character into the sequence
+            next += *it;
+        }
+    }
+    if (!next.empty())
+         result.push_back(next);
+    return result;
+}
+
+
+
 std::vector<unsigned long> primos;
 
 void carregar_primos(char* nome_arquivo)  {
@@ -25,11 +52,18 @@ void carregar_primos(char* nome_arquivo)  {
 }
 
 char* preparar_problema1(char* args) {
-    //transforma os args na estrutura do problema
-    //chama o problema
-    //return problema_1(params...);
-    return (char*) "1"; //return temporario
+
+    std::string args_str(args);
+    std::vector<std::string> vec_args = explode(args_str, '/');
+
+    unsigned long min_p = std::stoull(vec_args[0]);
+    unsigned long max_p = std::stoull(vec_args[1]);
+    unsigned long min_q = std::stoull(vec_args[2]);
+    unsigned long max_q = std::stoull(vec_args[3]);
+
+    return problema_1(min_p, max_p, min_q, max_q);
 }
+
 char* preparar_problema2(char* args) {return (char*) "2";}
 char* preparar_problema3(char* args) {return (char*) "3";}
 char* preparar_problema4(char* args) {return (char*) "4";}
