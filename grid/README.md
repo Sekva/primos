@@ -51,6 +51,8 @@ MariaDB [(none)]> FLUSH PRIVILEGES;
 MariaDB [(none)]> quit
 ```
 
+> Nota: Se estiver utilizando um ip público, você terá que liberar acesso caso queira acessar aquele banco por algum gereniador, veja: [link/fonte](https://linuxize.com/post/mysql-remote-access/#granting-access-to-a-user-from-a-remote-machine)
+
 - Após isso, faça uma cópia do arquivo '.env.example' com o nome '.env' para a **pasta do projeto.**
 
 Colocando as suas respectivas informações, como mostrado no exemplo ('.env.example')

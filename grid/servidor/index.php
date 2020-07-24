@@ -8,6 +8,8 @@
 <sub>
     Universidade Federal do Agreste de Pernambuco;
     <br>
+    Curso de Bacharelado em Ciência da Computação;
+    <br>
     Projeto de Pesquisa de Otimização Computacional;
     <br>
     Orientador: Prof. Dr. Gersonilo Oliveira da Silva;
