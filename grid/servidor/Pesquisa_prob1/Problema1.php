@@ -164,7 +164,7 @@
                 $time = time();
                 $tempo_maximo_aux = $time - Configurar::$tempoMaximoDeProcessamento;
                 $tempo_minimo_aux = $time - Configurar::$tempoMinimoDeProcessamento;
-                $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id . " AND tempo_ultima_vez_requisitado >= " . $tempo_maximo_aux . "AND tempo_ultima_vez_requisitado <= " $tempo_minimo_aux;
+                $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id . " AND tempo_ultima_vez_requisitado >= " . $tempo_maximo_aux . "AND tempo_ultima_vez_requisitado <= " . $tempo_minimo_aux;
             } else {
                 $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id;
             }
