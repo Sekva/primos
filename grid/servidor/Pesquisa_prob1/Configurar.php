@@ -28,7 +28,7 @@
         // tempo. Sendo esse tempo definido em segundo.
         // Um tempo mínimo e um tempo máximo é definido para que seja
         // respeitado, e só assim a submissão será aceita.
-        public static $tempoMinimoDeProcessamento = 20;
+        public static $tempoMinimoDeProcessamento = 5;
         public static $tempoMaximoDeProcessamento = (60 * 2);
 
 

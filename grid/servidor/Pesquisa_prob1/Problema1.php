@@ -154,17 +154,17 @@
 
         // Atualiza o status do processo
         public static function attStatusProcesso($id, $status) {
-
             $connect = parent::dbConnect();
 
             // Att status
-            if($status = 1) { // status = processando, logo, atualiza o tempo de requisicao
+            if($status == 1) { // status = processando, logo, atualiza o tempo de requisicao
                 $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . ", tempo_ultima_vez_requisitado=" . time() . " WHERE id=" . $id;
-            } else if($status = 3) { // Quando terminar por completo o processamento do trabalho
+            } else if($status == 3) { // Quando terminar por completo o processamento do trabalho
                 // Só atualiza pra concluído se o processo foi executado no tempo correto (antes do seu vencimento)
                 $time = time();
-                $tempoLimiteProcessoAdormecido = $time - Configurar::$tempoProcessoAdormecido;
-                $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id . " AND tempo_ultima_vez_requisitado <= " . $tempoLimiteProcessoAdormecido;
+                $tempo_maximo_aux = $time - Configurar::$tempoMaximoDeProcessamento;
+                $tempo_minimo_aux = $time - Configurar::$tempoMinimoDeProcessamento;
+                $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id . " AND tempo_ultima_vez_requisitado >= " . $tempo_maximo_aux . "AND tempo_ultima_vez_requisitado <= " $tempo_minimo_aux;
             } else {
                 $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id;
             }

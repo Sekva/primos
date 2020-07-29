@@ -41,7 +41,7 @@ def tentar_enviar(url_enviar, conteudoEnvio):
         if(count_tentativas > numero_tentativas_limite):
             return False
 
-        print("Erro ao tentar atualizar status. Tentando novamente em 3 segundos. (" + count_tentativa_att + ")")
+        print("Erro ao tentar atualizar status. Tentando novamente em 3 segundos. (" + count_tentativas + ")")
         time.sleep(3)
         resultadoAttProcesso = requests.post(url_enviar, data = conteudoEnvio)
         count_tentativas += 1
@@ -63,16 +63,16 @@ def enviar_prob1(url, status, res_requisitar, res_processar = False):
                 conteudoEnvio = {
                     'atualizarStatus':'',
                     'id':res_requisitar['id'],
-                    'status':'3',
+                    'status': status,
                     'resposta':'true',
                     'p':resp_i['p'],
                     'q':resp_i['q'],
                     'resultado_calculo':resp_i['resultado_calculo']
                 }
             else: # nao obteve resposta
-                conteudoEnvio = {'atualizarStatus': '', 'id':res_requisitar['id'], 'status':'3', 'resposta':'false'}
+                conteudoEnvio = {'atualizarStatus': '', 'id':res_requisitar['id'], 'status': status, 'resposta':'false'}
 
-            # Pois está dentro de um for, se colcoar direto o return, quando for True, vai encerrar a funcao
+            # Pois está dentro de um for, se colocar direto o return, quando True, vai encerrar a funcao
             if(tentar_enviar(url_enviar, conteudoEnvio) == False):
                 return False # encerra a funcao no primeiro erro
 

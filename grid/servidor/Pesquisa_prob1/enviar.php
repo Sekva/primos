@@ -15,7 +15,7 @@
             $id = $_POST["id"];
 
             // TODO: Verificar tipo de dado recebido
-            $status = $_POST["status"];
+            $status = intval($_POST["status"]);
 
 
             require_once "Problema1.php";

@@ -63,15 +63,16 @@ def proc_start(thread_num):
 
         verificarAtualizacao()
 
+        # Chamada de processamento de vários tipos de trabalhos
         resultado_processamento = False
         if(id_prob == 1):
             resultado_processamento = trabalhar_prob1(url_global + url_nome_prob, diretorio_dados)
         elif(id_prob == 2):
             print("tabalhar_prob2()")
 
-        if( not resultado_processamento):
-            print("Erro ao tentar processar. Tentando novamente em 3 segundos")
-            time.slee(3)
+        if(not resultado_processamento):
+            print("Erro ao tentar processar. Tentando novamente em 10 segundos.\nPor Favor, informe esse erro ao administrador.")
+            time.sleep(10)
         else:
             ja_processado += 1
 
