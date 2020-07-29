@@ -41,7 +41,7 @@ def tentar_enviar(url_enviar, conteudoEnvio):
         if(count_tentativas > numero_tentativas_limite):
             return False
 
-        print("Erro ao tentar atualizar status. Tentando novamente em 3 segundos. (" + count_tentativas + ")")
+        print("Erro ao tentar atualizar status. Tentando novamente em 3 segundos. (" + str(count_tentativas) + ")")
         time.sleep(3)
         resultadoAttProcesso = requests.post(url_enviar, data = conteudoEnvio)
         count_tentativas += 1

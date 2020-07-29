@@ -8,7 +8,7 @@
 
     if (isset($_POST["criar"]) && $_POST["criar"] && $_POST["criar"] == "sim") {
         require_once 'Problema1.php';
-        Problema1::criar(2, 199);
+        Problema1::criar(2, 19999);
         echo "Novo objeto criado!<br>";
     }
 

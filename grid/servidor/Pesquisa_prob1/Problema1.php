@@ -155,7 +155,7 @@
         // Atualiza o status do processo
         public static function attStatusProcesso($id, $status) {
             $connect = parent::dbConnect();
-
+            $status = intval($status);
             // Att status
             if($status == 1) { // status = processando, logo, atualiza o tempo de requisicao
                 $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . ", tempo_ultima_vez_requisitado=" . time() . " WHERE id=" . $id;
@@ -164,7 +164,7 @@
                 $time = time();
                 $tempo_maximo_aux = $time - Configurar::$tempoMaximoDeProcessamento;
                 $tempo_minimo_aux = $time - Configurar::$tempoMinimoDeProcessamento;
-                $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id . " AND tempo_ultima_vez_requisitado >= " . $tempo_maximo_aux . "AND tempo_ultima_vez_requisitado <= " . $tempo_minimo_aux;
+                $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id . " AND tempo_ultima_vez_requisitado >= " . $tempo_maximo_aux . " AND tempo_ultima_vez_requisitado <= " . $tempo_minimo_aux;
             } else {
                 $sql = "UPDATE pesquisa.trabalhos_prob1 SET status=" . $status . " WHERE id=" . $id;
             }
@@ -174,7 +174,7 @@
             if($resultado == FALSE) {
                 require_once 'error.php';
                 $msg = "Location: ./error.php?msg=";
-                $msg = $msg . "Error: Ao atualizar status [error: 293872]";
+                $msg = $msg . "Error: Ao atualizar status [error: 293872] " . $sql;
                 header($msg);
             } else {
                 echo "ok";
