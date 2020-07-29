@@ -43,7 +43,7 @@ def enviar_prob1(url, status, res_requisitar ,res_processar = False):
         conteudoEnvio = {'atualizarStatus': '', 'id':res_requisitar['id'], 'status':'1', 'resposta':'false'}
 
     elif(res_processar != False): # quando terminar de processar
-        if(res_processar['resposta'] == true): # obteve resposta
+        if(res_processar['resposta'] == 'true'): # obteve resposta
             conteudoEnvio = {
                 'atualizarStatus':'',
                 'id':res_requisitar['id'],
@@ -76,7 +76,6 @@ def processar_prob1(url, res_requisitar):
     if(sucesso_att == False):
         return False
 
-
     libtqp = CDLL("./libtqp.so")
     fn = libtqp._Z4progtPcS_
     fn.restype = c_char_p
@@ -86,12 +85,38 @@ def processar_prob1(url, res_requisitar):
     max_p = int(p) + res_requisitar["k"]
     max_q = int(q) + res_requisitar["k"]
 
-    args = str(p) + "/" + str(max_p) + "/" str(q) + str(max_q)
+    args = str(p) + "/" + str(max_p) + "/" + str(q) + "/" + str(max_q)
     p = fn(c_short(1), c_char_p(args.encode("utf-8")), c_char_p("../../../listas/arquivinho".encode("utf-8")))
-    print(p)
-    resultado = p
-    exit()
+    resultado = str(p.decode("utf-8"))
 
+    dicionarios_retorno = []
+
+    # verifica se tem resultado e se não, já retorna daqui
+    if not resultado:
+        print("Sem resposta....")
+        return {"resposta": False, "p": 0, "q": 0, "resultado_calculo": 0}
+
+    # separa as linhas do resultado
+    linhas = resultado.split('\n')
+
+
+    # pra cada linha do resultado, extrai o dados
+    for resposta_achada in linhas:
+        if not resposta_achada:
+            continue
+
+        p_q_r = resposta_achada.split('/')
+        valor_p = p_q_r[0]
+        valor_q = p_q_r[1]
+        valor_r = p_q_r[2]
+        dicionario_da_resposta = {"resposta": 'true', "p": valor_p, "q": valor_q, "resultado_calculo": valor_r}
+        dicionarios_retorno.append(dicionario_da_resposta)
+
+    # retornando repostas
+    # só dar um jeito de enviar esse array todo ao inves de só 1
+    print(dicionarios_retorno)
+    exit()
+    return dicionarios_retorno[0]
 
     ######
     #resultado = chamada do processamento
@@ -102,7 +127,7 @@ def processar_prob1(url, res_requisitar):
     # o campo resposta é um boolean
         # (true para quando achar um resultado)
         # [resposta:true, p:3, q:7, resultado_calculo:121]
-    return resultado
+    # return resultado
 
 
 def trabalhar_prob1(url):
@@ -112,13 +137,12 @@ def trabalhar_prob1(url):
     if(res_requisitar == False):
         return False
 
-    Processa o trabalho requisitado
+    #Processa o trabalho requisitado
     res_processar = processar_prob1(url, res_requisitar)
     if(res_processar == False):
         return False
 
-    Submete o trabalho processado
+    #Submete o trabalho processado
     res_enviar = enviar_prob1(url, 3, res_requisitar, res_processar)
     return res_enviar
 
-trabalhar_prob1('http://localhost:8000/Pesquisa_prob1/')

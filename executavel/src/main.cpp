@@ -33,11 +33,13 @@ std::vector<std::string> explode(const std::string& str, const char& ch) {
 
 
 std::vector<unsigned long> primos;
+char ja_foi_carregado = 0;
 
 void carregar_primos(char* nome_arquivo)  {
+    if(ja_foi_carregado) { return; }
   printf("Carregando lista de primos...\n");
   std::ifstream infile(nome_arquivo);
-  printf("asdasdad --  %s\n", nome_arquivo);
+  printf("Usando o arquivo %s\n", nome_arquivo);
   if(!infile) {
       exit(5);
   }
@@ -48,7 +50,8 @@ void carregar_primos(char* nome_arquivo)  {
     if (!(iss >> v)) { break; }
     primos.push_back(v);
   }
-  printf("São %ld primos q\n", primos.size());
+  ja_foi_carregado = 1;
+  printf("São %ld primos...\n", primos.size());
 }
 
 char* preparar_problema1(char* args) {
@@ -73,11 +76,18 @@ char* preparar_problema7(char* args) {return (char*) "7";}
 
 char* prog(unsigned short problema, char* args, char* arquivo_primos) {
 
+
+    char* nop_ret = (char*) calloc(sizeof(char), 4);
+    nop_ret[0] = 'n';
+    nop_ret[1] = 'o';
+    nop_ret[2] = 'p';
+    nop_ret[3] = '\0';
+
   if(arquivo_primos) {
     carregar_primos(arquivo_primos);
   } else {
     printf("Passe 1 arquivo com os numeros\n");
-    return (char*)"nop";
+    return nop_ret;
   }
 
   switch (problema) {
@@ -98,7 +108,6 @@ char* prog(unsigned short problema, char* args, char* arquivo_primos) {
       default:
           break;
   }
-
-  return (char*) "nop";
+  return nop_ret;
 
 }

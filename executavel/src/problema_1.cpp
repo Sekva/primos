@@ -8,7 +8,7 @@ char* problema_1(
         unsigned long indice_max_q) {
 
 
-  printf("Rodando problema_1... (p+q)² + pq == a², a inteiro\n");
+  printf("Rodando problema_1... (p+q)² + pq == a², a inteiro, p=%ld:%ld, q=%ld:%ld\n", indice_min_p, indice_max_p, indice_min_q, indice_max_q);
   std::ostringstream stringStream;
 
   unsigned long p, q, resultado;
@@ -20,11 +20,16 @@ char* problema_1(
       unsigned long a = e_quadrado_perfeito(resultado);
       if(a != 0) { //Se a for 0 é pq resultado não é quadrado perfeito
         printf("p: %ld, q: %ld, a²:%ld, a: %ld\n", p, q, resultado, a);
-        stringStream << p << "/" << q << "/" << resultado;
+        stringStream << p << "/" << q << "/" << resultado << "\n";
       }
     }
   }
 
   std::string str_return = stringStream.str();
-  return strcpy(new char[str_return.length() + 1], str_return.c_str());
+  char* char_p_ret = (char*) calloc(str_return.length()+1 , sizeof(char));
+  for(int i = 0; i < (int) str_return.length(); i++) {
+      char_p_ret[i] = str_return[i];
+  }
+  char_p_ret[str_return.length()+1] = '\0';
+  return char_p_ret;
 }

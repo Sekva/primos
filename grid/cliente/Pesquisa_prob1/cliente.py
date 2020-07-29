@@ -13,10 +13,12 @@ numeroDeThreads = 1
 nomeCliente = "user"
 
 
-url_global = "http://localhost:8000/"
+url_global = "http://173.82.94.37/"
 
 id_prob = 1
 url_nome_prob = "Pesquisa_prob1/"
+
+from cliente_prob1 import *
 
 # [codigo, Nome_pequeno_do_prob, url_nome_prob, id_no_executavel]
 nomes_prob = [
