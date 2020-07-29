@@ -18,6 +18,8 @@ url_global = "http://173.82.94.37/"
 id_prob = 1
 url_nome_prob = "Pesquisa_prob1/"
 
+diretorio_dados = "./dados/"
+
 from cliente_prob1 import *
 
 # [codigo, Nome_pequeno_do_prob, url_nome_prob, id_no_executavel]
@@ -63,7 +65,7 @@ def proc_start(thread_num):
 
         resultado_processamento = False
         if(id_prob == 1):
-            resultado_processamento = trabalhar_prob1(url_global + url_nome_prob)
+            resultado_processamento = trabalhar_prob1(url_global + url_nome_prob, diretorio_dados)
         elif(id_prob == 2):
             print("tabalhar_prob2()")
 
@@ -88,6 +90,7 @@ for i in range(len(sys.argv)):
         print("[-v] para mostrar a versão desse programa")
         print("[-n <número de processos>] para indicar a quantidade de processos")
         print("[-t <número de threads>] para indicar a quantidade de threads")
+        print("[-d <diretório dos dados>] para indicar das listas de dados")
         print("[-q] modo silencioso")
         print("[-host] para indicar o servidor (opcional)")
         print("\t exemplo: -host http://localhost/")
@@ -162,6 +165,14 @@ for i in range(len(sys.argv)):
         else:
             print("\nNúmero de processamentos invalido")
             exit()
+
+    if sys.argv[i] == "-d":
+        if ((i + 1 < len(sys.argv))) and str(sys.argv[i + 1]).isalpha():
+            diretorio_dados = str(sys.argv[i + 1])
+        else:
+            print("\nDiretório Inválido")
+            exit()
+
     if sys.argv[i] == "-q":
         printar = False
 
