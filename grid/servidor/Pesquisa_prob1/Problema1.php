@@ -77,13 +77,17 @@
                     if($valor_inicial_p == $valor_inicial_q) {
                         $count_ps_add += 1; // Completou um ciclo do p
                     }
-                // ex: [p=200, q=200]
+                // ex: [p=200, q=200] | [p=-1, q=-1]
                 } else if($ultimo_valor_p == $ultimo_valor_q) {
-                    $valor_inicial_p = $ultimo_valor_p + $ultimo_valor_k + 1;
+                    if($ultimo_valor_p == -1) {
+                        $valor_inicial_p = 0;
+                    } else {
+                        $valor_inicial_p = $ultimo_valor_p + $ultimo_valor_k + 1;
+                    }
                     $valor_inicial_q = 0;
                 // ex: [p=200, q=300]
                 } else { // Isso não deveria acontecer em tese
-                    echo "Erro, isso não deveria acontecer| p = " . $ultimo_valor_p . ", q = " . $ultimo_valor_q;
+                    echo "Erro, isso não deveria acontecer| p = " . $ultimo_valor_p . ", q = " . $ultimo_valor_q . "<br>";
                     break;
                 }
 
