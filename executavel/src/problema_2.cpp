@@ -1,5 +1,5 @@
 #include "global.hpp"
-extern std::vector<unsigned long> primos;
+extern std::vector<mpz_class> primos;
 
 void problema_2(
         unsigned long indice_min_p,
@@ -9,6 +9,7 @@ void problema_2(
 
   printf("Rodando problema_2... Primos gemeos grau n\n");
 
+  /*
   long grau_gemeo = 2;
 
   signed long p, q, resultado;
@@ -24,6 +25,8 @@ void problema_2(
       }
     }
   }
+
+  */
 
 
 

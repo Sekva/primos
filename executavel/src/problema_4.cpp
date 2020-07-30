@@ -1,5 +1,5 @@
 #include "global.hpp"
-extern std::vector<unsigned long> primos;
+extern std::vector<mpz_class> primos;
 
 void problema_4(
         unsigned long indice_min_p,
@@ -9,6 +9,7 @@ void problema_4(
 
   printf("Rodando problema_3... Problema inverso de Mersenne\n");
 
+  /*
   unsigned long p;
   for(unsigned long int i = indice_min_p; i < indice_max_p; i++) {
       p = primos[i];
@@ -26,4 +27,6 @@ void problema_4(
           printf("q: %ld, n: %Lf\n", q, n);
       }
   }
+
+  */
 }

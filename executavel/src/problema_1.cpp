@@ -1,5 +1,6 @@
 #include "global.hpp"
-extern std::vector<unsigned long> primos;
+#include <gmpxx.h>
+extern std::vector<mpz_class> primos;
 
 char* problema_1(
         unsigned long indice_min_p,
@@ -11,16 +12,23 @@ char* problema_1(
   printf("Rodando problema_1... (p+q)² + pq == a², a inteiro, p=%ld:%ld, q=%ld:%ld\n", indice_min_p, indice_max_p, indice_min_q, indice_max_q);
   std::ostringstream stringStream;
 
-  unsigned long p, q, resultado;
+  mpz_class p, q, resultado, parte_1, parte_2, quadrado;
   for(unsigned long i = indice_min_p; i <= indice_max_p; i++) {
     p = primos[i];
     for(unsigned long k = indice_min_q; k <= indice_max_q; k++) {
       q = primos[k];
-      resultado = pow(p+q, 2) + p*q; //aux = pow(p, 2) + 3*p*q + pow(q, 2);
-      unsigned long a = e_quadrado_perfeito(resultado);
+
+      mpz_class soma = p + q;
+      parte_1 = soma * soma;
+
+      parte_2 = p * q;
+
+      resultado = parte_1 + parte_2;
+
+      int a = mpz_perfect_square_p(resultado.get_mpz_t());
       if(a != 0) { //Se a for 0 é pq resultado não é quadrado perfeito
-        printf("p: %ld, q: %ld, a²:%ld, a: %ld\n", p, q, resultado, a);
-        stringStream << p << "/" << q << "/" << resultado << "\n";
+          std::cout << "p: " << p << ", q: " << q << ", a²: " << resultado << "\n";
+          stringStream << p << "/" << q << "/" << resultado << "\n";
       }
     }
   }

@@ -1,5 +1,5 @@
 CC = g++ -Wall -O3 -fPIC -g
-LIBFLAGS= -lm
+LIBFLAGS= -lm -lgmpxx -lgmp
 SRC_DIR = ./src/
 OBJETOS_DIR = ./obj/
 BUILD_DIR = ./build/

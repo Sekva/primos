@@ -99,7 +99,10 @@ def processar_prob1(url, res_requisitar, diretorio_dados):
     max_q = int(q) + res_requisitar["k"]
 
     args = str(p) + "/" + str(max_p) + "/" + str(q) + "/" + str(max_q)
+    diretorio_dados = "../../../listas/arquivinho"
+    start_time = time.time()
     p = fn(c_short(1), c_char_p(args.encode("utf-8")), c_char_p(diretorio_dados.encode("utf-8")))
+    print("Processou em %s segundos" % (time.time() - start_time))
     resultado = str(p.decode("utf-8"))
 
     dicionarios_retorno = []

@@ -1,6 +1,6 @@
 #include "global.hpp"
 
-extern std::vector<unsigned long> primos;
+extern std::vector<mpz_class> primos;
 
 void problema_5(
         unsigned long indice_min_p,
@@ -11,7 +11,7 @@ void problema_5(
   printf("Rodando problema_5... Problema de Goldbach\n");
   printf("Ainda não feito com 2 indices, parando...\n");
   return;
-
+    /*
   unsigned long p, q;
   unsigned long tamanho_vetor = primos.size();
   unsigned long comecar_da_posicao = 0;
@@ -59,4 +59,5 @@ void problema_5(
       goto reset_loop;
     }
   }
+  */
 }

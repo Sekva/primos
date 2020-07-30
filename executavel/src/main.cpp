@@ -1,5 +1,6 @@
 #include "main.hpp"
 #include "global.hpp"
+#include <gmpxx.h>
 #include <string>
 void nop(Num _a, Num _b, Num _c, Num _d) {
   printf("nop\n");
@@ -32,7 +33,7 @@ std::vector<std::string> explode(const std::string& str, const char& ch) {
 
 
 
-std::vector<unsigned long> primos;
+std::vector<mpz_class> primos;
 char ja_foi_carregado = 0;
 
 void carregar_primos(char* nome_arquivo)  {
@@ -46,9 +47,9 @@ void carregar_primos(char* nome_arquivo)  {
   std::string line;
   while (std::getline(infile, line)) {
     std::istringstream iss(line);
-    unsigned long v;
+    std::string v;
     if (!(iss >> v)) { break; }
-    primos.push_back(v);
+    primos.push_back(mpz_class(v));
   }
   ja_foi_carregado = 1;
   printf("São %ld primos...\n", primos.size());

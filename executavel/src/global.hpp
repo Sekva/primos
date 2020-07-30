@@ -1,6 +1,8 @@
 #ifndef GLOBAL_HPP
 #define GLOBAL_HPP
 
+#include <gmpxx.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <cmath>
