@@ -245,6 +245,26 @@
         }
 
 
+        public function getQuantProcFinalizados() {
+            $connect = parent::dbConnect();
+
+            // Coleta a quantidade de processos ja finalizados
+            $sql = "SELECT count(id) FROM pesquisa.trabalhos_prob1 WHERE status <> 0";
+            $resultado = $connect->query($sql);
+
+            if($resultado == FALSE) {
+                require_once 'error.php';
+                $msg = "Location: ./error.php?msg=";
+                $msg = $msg . "Error: Ao adicionar um novo resultado [error: 276823]";
+                header($msg);
+            }
+
+            parent::dbDisconect($connect);
+
+            return $resultado;
+        }
+
+
     }
 
 ?>

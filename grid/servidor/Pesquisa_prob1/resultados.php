@@ -6,9 +6,10 @@
 <?php
 
     require_once "Problema1.php";
-    $resultado = Problema1::getResultados();
-
-    echo "Quantidade de resultados: " . $resultado->num_rows . "<br><br>";
+    $res_getResultados = Problema1::getResultados();
+    $res_getQuantFinalizados = Problema1::getQuantProcFinalizados()->fetch_assoc()['count(id)'];
+    echo "Quantidade de processos terminados: " . $res_getQuantFinalizados . "<br>";
+    echo "Quantidade de resultados: " . $res_getResultados->num_rows . "<br><br>";
 
     echo"<style>
         table, th, td {
@@ -29,8 +30,8 @@
         <th>q</th>
         <th>Resultado</th>";
 
-    if($resultado->num_rows > 0) {
-        while($row = $resultado->fetch_assoc()) {
+    if($res_getResultados->num_rows > 0) {
+        while($row = $res_getResultados->fetch_assoc()) {
             echo "<tr>
             <td>" . $row["id"] . "</td>
             <td>" . $row["p"] . "</td>
