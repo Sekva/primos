@@ -20,7 +20,7 @@ url_nome_prob = "Pesquisa_prob1/"
 
 diretorio_dados = "./dados/"
 
-from cliente_prob1 import *
+from Pesquisa_prob1.cliente_prob1 import *
 
 # [codigo, Nome_pequeno_do_prob, url_nome_prob, id_no_executavel]
 nomes_prob = [

@@ -1,17 +1,8 @@
-CC = g++ -Wall -O3 -fPIC -g
+CC = g++ -static -Wall -O3 -fPIC -g
 LIBFLAGS= -lm -lgmpxx -lgmp
 SRC_DIR = ./src/
 OBJETOS_DIR = ./obj/
 BUILD_DIR = ./build/
-#SRCS = main.cpp \
-#       global.cpp \
-#       problema_1.cpp \
-#       problema_2.cpp \
-#       problema_3.cpp \
-#       problema_4.cpp \
-#       problema_5.cpp \
-#       problema_6.cpp \
-#       problema_7.cpp
 
 SRCS := $(shell ls src/*.cpp | cut -d '/' -f2)
 
