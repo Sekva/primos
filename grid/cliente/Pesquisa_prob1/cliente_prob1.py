@@ -89,7 +89,9 @@ def processar_prob1(url, res_requisitar, diretorio_dados):
     if(sucesso_att == False):
         return False
 
+    print("aaa")
     libtqp = CDLL("./libtqp.so")
+    print("bbb")
     fn = libtqp._Z4progtPcS_
     fn.restype = c_char_p
 

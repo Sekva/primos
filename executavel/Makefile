@@ -1,4 +1,4 @@
-CC = g++ -static -Wall -O3 -fPIC -g
+CC = g++ -Wall -O3 -fPIC -g -march=x86-64
 LIBFLAGS= -lm -lgmpxx -lgmp
 SRC_DIR = ./src/
 OBJETOS_DIR = ./obj/
