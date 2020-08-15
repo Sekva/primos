@@ -89,9 +89,8 @@ def processar_prob1(url, res_requisitar, diretorio_dados):
     if(sucesso_att == False):
         return False
 
-    print("aaa")
     libtqp = CDLL("./libtqp.so")
-    print("bbb")
+
     fn = libtqp._Z4progtPcS_
     fn.restype = c_char_p
 
@@ -105,7 +104,6 @@ def processar_prob1(url, res_requisitar, diretorio_dados):
     p = fn(c_short(1), c_char_p(args.encode("utf-8")), c_char_p(diretorio_dados.encode("utf-8")))
     print("Processou em %s segundos" % (time.time() - start_time))
     resultado = str(p.decode("utf-8"))
-
     dicionarios_retorno = []
 
     # verifica se tem resultado e se não, já retorna daqui
