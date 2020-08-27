@@ -30,7 +30,7 @@
                 $p_i = $_POST["p_i"];
                 $q_i = $_POST["q_i"];
                 $k = $_POST["k"];
-                Problema2::addResposta($p, $q, $p_i, $q_i $k);
+                Problema2::addResposta($p, $q, $p_i, $q_i, $k);
             }
 
         } else {

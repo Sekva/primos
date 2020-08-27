@@ -19,3 +19,10 @@
     <br><br>
     Contato: <a href="mailto:mateusbaltazar9@gmail.com"">mateusbaltazar9@gmail.com</a>
 </sub>
+
+<!-- 3 colunas -->
+<!-- esquerda -> links -->
+<!-- centro -> descrição sobre os problemas -->
+<!-- direita -> gráficos, informações, links históricos -->
+
+<!-- top bar com infos sonas e da faculdade -->
