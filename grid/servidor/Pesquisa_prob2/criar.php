@@ -11,7 +11,7 @@
         // quantidade de trabalhos para criar
         // intervalo de busca
         // k (espaço para verificar se é primo [3+(k=2)=5])
-        Problema2::criar(300, 5000, 2);
+        Problema2::criar(30, 5000, 2);
         echo "Novo objeto criado!<br>";
     }
 

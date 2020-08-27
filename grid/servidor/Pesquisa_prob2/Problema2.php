@@ -145,12 +145,12 @@
         }
 
         // Adiciona uma resposta
-        public static function addResposta($p, $q, $k) {
+        public static function addResposta($p, $q, $p_i, $q_i, $k) {
 
             $connect = parent::dbConnect();
 
             // Add resposta
-            $sql = "INSERT INTO pesquisa.resultados_prob2 (p, q, k) VALUES (" . $p . ", " . $q . ", " . $k . ")";
+            $sql = "INSERT INTO pesquisa.resultados_prob2 (primo_p, primo_q, indice_primo_p, indice_primo_q, k) VALUES (" . $p . ", " . $q . ", " . $p_i . ", " . $q_i . ", " . $k . ")";
             $resultado = $connect->query($sql);
 
             if($resultado == FALSE) {
