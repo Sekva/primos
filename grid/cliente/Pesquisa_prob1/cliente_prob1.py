@@ -1,5 +1,6 @@
 import requests
 import time
+import threading
 from ctypes import *
 
 numero_tentativas_limite = 10
@@ -28,8 +29,8 @@ def requisitar_prob1(url):
         else:
             if(count_tentativas > numero_tentativas_limite):
                 return False
-            print("FALHA AO REQUISITAR! (" + str(count_tentativas) + ")")
-            print("Tentando novamente em 3 segundos...")
+            print("[{:10d}] FALHA AO REQUISITAR! (".format(threading.get_native_id()) + str(count_tentativas) + ")")
+            print("[{:10d}] Tentando novamente em 3 segundos...".format(threading.get_native_id()))
             time.sleep(3)
             count_tentativas += 1
 
@@ -41,7 +42,7 @@ def tentar_enviar(url_enviar, conteudoEnvio):
         if(count_tentativas > numero_tentativas_limite):
             return False
 
-        print("Erro ao tentar atualizar status. Tentando novamente em 3 segundos. (" + str(count_tentativas) + ")")
+        print("[{:10d}] Erro ao tentar atualizar status. Tentando novamente em 3 segundos. (".format(threading.get_native_id()) + str(count_tentativas) + ")")
         time.sleep(3)
         resultadoAttProcesso = requests.post(url_enviar, data = conteudoEnvio)
         count_tentativas += 1
@@ -82,17 +83,13 @@ def enviar_prob1(url, status, res_requisitar, res_processar = False):
 
 
 # Responsável pelo processamento dos dados
-def processar_prob1(url, res_requisitar, diretorio_dados):
+def processar_prob1(url, res_requisitar, diretorio_dados, funcao_lib):
     diretorio_dados += 'Lista_A.list'
 
     sucesso_att = enviar_prob1(url, 1, res_requisitar)
     if(sucesso_att == False):
         return False
 
-    libtqp = CDLL("./libtqp.so")
-
-    fn = libtqp._Z4progtPcS_
-    fn.restype = c_char_p
 
     p = res_requisitar["p"]
     q = res_requisitar["q"]
@@ -101,14 +98,14 @@ def processar_prob1(url, res_requisitar, diretorio_dados):
 
     args = str(p) + "/" + str(max_p) + "/" + str(q) + "/" + str(max_q)
     start_time = time.time()
-    p = fn(c_short(1), c_char_p(args.encode("utf-8")), c_char_p(diretorio_dados.encode("utf-8")))
-    print("Processou em %s segundos" % (time.time() - start_time))
+    p = funcao_lib(c_short(1), c_char_p(args.encode("utf-8")), c_char_p(diretorio_dados.encode("utf-8")))
+    print("[{:10d}] Processou em {:f} segundos".format(threading.get_native_id(), (time.time() - start_time)))
     resultado = str(p.decode("utf-8"))
     dicionarios_retorno = []
 
     # verifica se tem resultado e se não, já retorna daqui
     if not resultado:
-        print("Sem resposta....")
+        print("[{:10d}] Sem resposta....".format(threading.get_native_id()))
         return [{"resposta": False, "p": 0, "q": 0, "resultado_calculo": 0}]
 
     # separa as linhas do resultado
@@ -130,7 +127,7 @@ def processar_prob1(url, res_requisitar, diretorio_dados):
     return dicionarios_retorno
 
 
-def trabalhar_prob1(url, diretorio_dados):
+def trabalhar_prob1(url, diretorio_dados, funcao_lib):
 
     # Requisita um novo trabalho
     res_requisitar = requisitar_prob1(url)
@@ -138,10 +135,12 @@ def trabalhar_prob1(url, diretorio_dados):
         return False
 
     #Processa o trabalho requisitado
-    res_processar = processar_prob1(url, res_requisitar, diretorio_dados)
+    res_processar = processar_prob1(url, res_requisitar, diretorio_dados, funcao_lib)
     if(res_processar == False):
         return False
 
     #Submete o trabalho processado
+    print("[{:10d}] Enviando dados do problema...".format(threading.get_native_id()))
     res_enviar = enviar_prob1(url, 3, res_requisitar, res_processar)
+    print("[{:10d}] Enviado.".format(threading.get_native_id()))
     return res_enviar

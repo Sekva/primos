@@ -1,33 +1,43 @@
 #include "global.hpp"
+#include <gmp.h>
 extern std::vector<mpz_class> primos;
 
-void problema_2(
-        unsigned long indice_min_p,
-        unsigned long indice_max_p,
-        unsigned long indice_min_q,
-        unsigned long indice_max_q) {
+char* problema_2(
+        unsigned long indice_min,
+        unsigned long indice_max,
+        unsigned long k) {
 
-  printf("Rodando problema_2... Primos gemeos grau n\n");
+  std::stringstream ss;
+  ss << std::this_thread::get_id();
+  uint64_t id = std::stoull(ss.str());
+  printf("[%10lu] Rodando problema_2... Primos gemeos grau n=%ld\n", id, k);
 
-  /*
-  long grau_gemeo = 2;
+  mpz_class p, q, k_mpz, diff;
+  mpz_set_ui(k_mpz.get_mpz_t(), k);
 
-  signed long p, q, resultado;
-  for(unsigned long i = indice_min_p; i < indice_max_p; i++) {
-    p = primos[i];
-    for(unsigned long k = indice_min_q; k < indice_max_q; k++) {
-      q = primos[k];
-      printf("\r p: %ld, q:%ld", p, q);
-      signed long valor = (signed long) (p - q);
-      resultado = abs(valor);
-      if(resultado == grau_gemeo) {
-        printf("p: %ld, q: %ld, grau_gemeo: %ld\n", p, q, resultado);
+  std::ostringstream stringStream;
+
+  for(unsigned long idx = indice_min; idx < indice_min + indice_max; idx++) {
+
+      p = primos[idx];
+      q = primos[idx + 1];
+      diff = q - p;
+
+      // Como a lista é ordenada, então diff é sempre positivo
+      if(diff == k_mpz) {
+          //std::cout << "p: " << p << ", q: " << q << ", q-p: " << diff << ", p_i: " << idx << ", q_i: " << idx+1 << "\n";
+          stringStream << p << "/" << q << "/" << diff << "/" << idx << "/" << idx+1 << "\n";
       }
-    }
+
   }
 
-  */
 
-
+  std::string str_return = stringStream.str();
+  char* char_p_ret = (char*) calloc(str_return.length()+1 , sizeof(char));
+  for(int i = 0; i < (int) str_return.length(); i++) {
+      char_p_ret[i] = str_return[i];
+  }
+  char_p_ret[str_return.length()+1] = '\0';
+  return char_p_ret;
 
 }

@@ -8,8 +8,10 @@ char* problema_1(
         unsigned long indice_min_q,
         unsigned long indice_max_q) {
 
-
-  printf("Rodando problema_1... (p+q)² + pq == a², a inteiro, p=%ld:%ld, q=%ld:%ld\n", indice_min_p, indice_max_p, indice_min_q, indice_max_q);
+  std::stringstream ss;
+  ss << std::this_thread::get_id();
+  uint64_t id = std::stoull(ss.str());
+  printf("[%10lu] Rodando problema_1... (p+q)² + pq == a², a inteiro, p=%ld:%ld, q=%ld:%ld\n", id, indice_min_p, indice_max_p, indice_min_q, indice_max_q);
   std::ostringstream stringStream;
 
   mpz_class p, q, resultado, parte_1, parte_2, quadrado;
@@ -27,7 +29,7 @@ char* problema_1(
 
       int a = mpz_perfect_square_p(resultado.get_mpz_t());
       if(a != 0) { //Se a for 0 é pq resultado não é quadrado perfeito
-          std::cout << "p: " << p << ", q: " << q << ", a²: " << resultado << "\n";
+          //std::cout << "p: " << p << ", q: " << q << ", a²: " << resultado << "\n";
           stringStream << p << "/" << q << "/" << resultado << "\n";
       }
     }

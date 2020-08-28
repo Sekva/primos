@@ -7,6 +7,8 @@ import os
 import subprocess
 import time
 import threading
+from ctypes import *
+
 
 versao = "1.0.0"
 numeroDeThreads = 1
@@ -15,17 +17,24 @@ nomeCliente = "user"
 
 url_global = "http://173.82.94.37/"
 
-id_prob = 1
-url_nome_prob = "Pesquisa_prob1/"
+id_prob = 2
+url_nome_prob = ""
 
 diretorio_dados = "./dados/"
 
+
+libtqp = CDLL("./libtqp.so")
+funcao_lib = libtqp._Z4progtPcS_
+funcao_lib.restype = c_char_p
+
+
 from Pesquisa_prob1.cliente_prob1 import *
+from Pesquisa_prob2.cliente_prob2 import *
 
 # [codigo, Nome_pequeno_do_prob, url_nome_prob, id_no_executavel]
 nomes_prob = [
-    [1, "Nome Pequeno 1", "Pesquisa_prob1", 0],
-    [2, "Nome Pequeno 2", "Pesquisa_prob2", 1],
+    [1, "Nome Pequeno 1", "Pesquisa_prob1/", 0],
+    [2, "Nome Pequeno 2", "Pesquisa_prob2/", 1],
 ]
 
 
@@ -55,6 +64,8 @@ def verificarAtualizacao():
 
 
 def proc_start(thread_num):
+
+    print("Iniciando thread {:10d}".format(threading.get_native_id()))
     global ja_processado
     while True:
         if processamento_contador:
@@ -66,18 +77,24 @@ def proc_start(thread_num):
         # Chamada de processamento de vários tipos de trabalhos
         resultado_processamento = False
         if(id_prob == 1):
-            resultado_processamento = trabalhar_prob1(url_global + url_nome_prob, diretorio_dados)
+            resultado_processamento = trabalhar_prob1(url_global + url_nome_prob, diretorio_dados, funcao_lib)
         elif(id_prob == 2):
-            print("tabalhar_prob2()")
+            resultado_processamento = trabalhar_prob2(url_global + url_nome_prob, diretorio_dados, funcao_lib)
 
         if(not resultado_processamento):
-            print("Erro ao tentar processar. Tentando novamente em 10 segundos.\nPor Favor, informe esse erro ao administrador.")
+            print("[{:10d}] Erro ao tentar processar. Tentando novamente em 10 segundos.\nPor Favor, informe esse erro ao administrador.".format(threading.get_native_id()))
             time.sleep(10)
         else:
             ja_processado += 1
 
 
 # ---------------------------------------------------
+
+# Seta a url certa
+for k in nomes_prob:
+    if(str(k[0]) == str(id_prob)):
+        url_nome_prob = k[2]
+
 
 for i in range(len(sys.argv)):
     if sys.argv[i] == "-h":
@@ -207,7 +224,13 @@ if(nomeCliente != "user"):
     print("--------------------------------------")
 time.sleep(1/2)
 
+# Só pra carregar a lista dos primos antes de iniciar as threads
+args = ""
+#TODO: arrumar o apontamento
+diretorio_dados_carregamento = diretorio_dados + 'Lista_A.list'
+funcao_lib(c_short(0), c_char_p(args.encode("utf-8")), c_char_p(diretorio_dados_carregamento.encode("utf-8")))
+
 for i in range(numeroDeThreads):
-    print("Iniciando thread " + str(i))
+    #TODO: ir passando um id melhor pra todas as threads, inclusive pro c++
     threading.Thread(target=proc_start, args=[i]).start()
     time.sleep(2)
