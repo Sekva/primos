@@ -138,7 +138,7 @@ for i in range(len(sys.argv)):
         exit()
 
     if sys.argv[i] == "-prob":
-        id_prob = str(sys.argv[i + 1])
+        id_prob = int(sys.argv[i + 1])
         flag = False
         for k in nomes_prob:
             if(str(k[0]) == str(id_prob)):
