@@ -53,7 +53,7 @@
                                 <a class="nav-link" href="/sobre"> Sobre </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="https://github.com/Sekva/primos"> Repositoio </a>
+                                <a class="nav-link" href="https://github.com/Sekva/primos" target="_blank"> Repositório </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/baixar"> Download </a>
