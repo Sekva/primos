@@ -38,7 +38,7 @@
                         <button class="navbar-toggler" type="button" data-toggle="collapse" onclick="trocarNav();" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <img class="d-none d-sm-block" src="euclides.png" width="30" height="30" alt="" onclick="window.location = '/';">
+                        <img class="d-none d-sm-block" src="/euclides.png" width="30" height="30" alt="" onclick="window.location = '/';">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -88,7 +88,7 @@
                 link.classList.add("list-group-item-action");
                 link.classList.add("list-group-item-dark");
 
-                if(window.location.pathname === link.attributes.href.textContent) {
+                if(window.location.pathname === link.attributes.href.textContent + "/") {
                     link.classList.add("active");
                 }
             }
