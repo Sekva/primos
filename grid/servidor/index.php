@@ -88,7 +88,7 @@
                 link.classList.add("list-group-item-action");
                 link.classList.add("list-group-item-dark");
 
-                if(window.location.pathname === link.attributes.href.textContent + "/") {
+                if(window.location.pathname === link.attributes.href.textContent + "/" || window.location.pathname === link.attributes.href.textContent) {
                     link.classList.add("active");
                 }
             }
