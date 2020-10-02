@@ -1,0 +1,58 @@
+:root {
+    --cor_turquesa: #013030;
+}
+
+.sidenav_lados {
+    width: 18%;
+}
+
+#sidenav_esq {
+    float: left;
+    margin-left: 2%;
+}
+
+#sidenav_dir {
+    float: right;
+    margin-right: 1%;
+    width: 21%;
+}
+
+.list-group-item-dark {
+    background-color: var(--cor_turquesa);
+    color: var(--light);
+}
+
+.card_link {
+    text-decoration: none;
+    color: var(--light);
+}
+
+
+.card_link:hover {
+    text-decoration: none;
+    color: var(--light);
+}
+
+
+.page-link {
+    color: var(--light);
+    background-color: var(--dark);
+    border-color: var(--gray);
+}
+
+.page-item.disabled .page-link {
+    color: var(--light);
+    background-color: var(--dark);
+    border-color: var(--gray);
+}
+
+.page-item.active .page-link {
+    background-color: var(--cor_turquesa);
+    border-color: var(--cor_turquesa);
+}
+
+
+#paginator_controller_problemas{
+    justify-content: center;
+    display: flex;
+}
