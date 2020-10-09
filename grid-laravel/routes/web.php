@@ -20,10 +20,18 @@ Route::get("/", function () {
 Auth::routes();
 
 Route::get("/home", "HomeController@index")->name("home");
-Route::get("/teste/{id}", "ProblemasController@teste");
 
 Route::get("/sobre", "GuestController@sobre")->name("sobre");
 Route::get("/baixar", "GuestController@baixar")->name("baixar");
 
-Route::get("/problemas", "ProblemasController@listar")->name("problemas");
-Route::get("/problemas/{id}", "ProblemasController@ver")->name("problemas.ver");
+Route::prefix('problemas')->name('problemas')->group( function() {
+    Route::get("/", "ProblemasController@listar");
+    Route::get("/{id}", "ProblemasController@ver")->name(".ver");
+
+    Route::prefix('{id}/trabalhos')->name('.trabalhos')->group( function() {
+        Route::get("/ver", "ProblemasController@verTrabalhos")->name(".ver");
+        Route::get("/criar", "ProblemasController@addTrabalhosView")->name(".criar");
+        Route::post("/criarSalvar", "ProblemasController@addTrabalhos")->name(".criar.salvar");
+    });
+
+});

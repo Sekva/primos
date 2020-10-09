@@ -17,10 +17,19 @@ class CreateTrabalhosTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
 
+            /*
+            status | significado
+               0   | livre para ser executado
+               1   | está sendo executado
+               2   | desativado/desligado
+               3   | ja executado com sucesso
+            */
             $table->smallInteger('status');
             $table->json('conteudo');
 
             $table->unsignedBigInteger('problema_id');
+            $table->unsignedBigInteger('ultima_vez_requisitado', 0);
+
             $table->foreign('problema_id')->references('id')->on('problemas');
         });
     }
