@@ -14,24 +14,24 @@ class ProblemasController extends Controller {
 
     public function listar() {
         $problemas = Problema::paginate(2);
-        return view("lista_problemas", ["problemas" => $problemas]);
+        return view("problemas.lista_problemas", ["problemas" => $problemas]);
     }
 
     public function ver($id_problema) {
         $problema = Problema::find($id_problema);
-        return view('ver_problema', ['problema' => $problema]);
+        return view('problemas.ver_problema', ['problema' => $problema]);
     }
 
     public function verTrabalhos($id_problema) {
         $problema = Problema::find($id_problema);
         $trabalhos = Trabalho::where('problema_id', $id_problema)->get();
-        return view('ver_trabalhos', ['problema' => $problema,
+        return view('problemas.ver_trabalhos', ['problema' => $problema,
             'trabalhos' => $trabalhos]);
     }
 
     public function addTrabalhosView($id_problema) {
         $problema = Problema::find($id_problema);
-        return view('adicionar_trabalhos', ['problema' => $problema]);
+        return view('problemas.adicionar_trabalhos', ['problema' => $problema]);
     }
 
     public function addTrabalhos(Request $request) {
@@ -41,6 +41,6 @@ class ProblemasController extends Controller {
 
     public function requisitarTrabalho($id_problema) {
         $trabalho = Problema::requisitar_trabalho($id_problema);
-        return view('requisitar', ['trabalho_json' => $trabalho->conteudo]);
+        return view('problemas.requisitar', ['trabalho_json' => $trabalho->conteudo]);
     }
 }
