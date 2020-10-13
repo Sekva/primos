@@ -38,4 +38,9 @@ class ProblemasController extends Controller {
         Problema::add_trabalhos($request->id, $request->quant);
         return $this->verTrabalhos($request->id);
     }
+
+    public function requisitarTrabalho($id_problema) {
+        $trabalho = Problema::requisitar_trabalho($id_problema);
+        return view('requisitar', ['trabalho_json' => $trabalho->conteudo]);
+    }
 }
