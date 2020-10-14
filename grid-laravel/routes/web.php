@@ -16,3 +16,6 @@ Route::get("/baixar", "GuestController@baixar")->name("baixar");
 Route::prefix('problemas')->name('problemas')->group( function() {
     require 'problemas.php';
 });
+Route::prefix('api')->name('api')->group( function() {
+    require 'api.php';
+});

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Problema;
 use App\Trabalho;
+use App\Resposta;
 
 class ProblemasController extends Controller {
 
@@ -40,7 +41,26 @@ class ProblemasController extends Controller {
     }
 
     public function requisitarTrabalho($id_problema) {
-        $trabalho = Problema::requisitar_trabalho($id_problema);
-        return view('problemas.requisitar', ['trabalho_json' => $trabalho->conteudo]);
+        $trabalho = Trabalho::requisitar_trabalho($id_problema);
+        if($trabalho) {
+            return view('problemas.requisitar', ['trabalho' => $trabalho]);
+        }
+        return "Erro, nenhum trabalho foi encontrado";
     }
+
+    public function attStatusTrabalho($id_trabalho, $status) {
+        $trabalho = Trabalho::attStatus($id_trabalho, $status);
+        return view('problemas.requisitar', ['trabalho' => $trabalho]);
+    }
+
+    // public function enviarResposta(Request $req) {
+    //     $resposta = new Resposta;
+    //     // return var_dump($req);
+    //     $resposta->conteudo = $req['conteudo'];
+    //     $resposta->problema_id = $req['problema_id'];
+    //     $resposta->trabalho_id = $req['trabalho_id'];
+    //     $resposta->save();
+    //     echo $resposta->id;
+    // }
+
 }

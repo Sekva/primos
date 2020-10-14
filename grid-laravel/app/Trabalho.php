@@ -15,6 +15,16 @@ class Trabalho extends Model {
         return $this->belongsTo("App\Trabalho");
     }
 
+    public static function attStatus($id_trabalho, $status) {
+        $trabalho = Trabalho::find($id_trabalho);
+        $trabalho->status = $status;
+        if($status == 1 || $status == '1') {
+            $trabalho->ultima_vez_requisitado = time();
+        }
+        $trabalho->save();
+        return $trabalho;
+    }
+
     private static function varrerEAtualizarProcessos() {
         $time = time();
         $tempoLimite = $time - Configuracao::$tempoProcessoAdormecido;
@@ -26,10 +36,9 @@ class Trabalho extends Model {
         ]])
         ->get();
 
-        # Atualiza os trablhos desatualizados
+        # Atualiza o status dos trabalhos desatualizados
         foreach ($trabalhos_desatualizados  as $t) {
-            $t['status'] = 0;
-            $t->save();
+            self::attStatus($t->id, 0);
         }
     }
 
@@ -128,7 +137,7 @@ class Trabalho extends Model {
         }
     }
 
-    public static function requisitar_trabalho_problema_1() {
+    public static function requisitar_trabalho($id_problema) {
         $ran = rand(1, Configuracao::$randAttProcAdormecidos);
         if($ran == 1) {
             // Atualizar processos adormecidor (cliente parou antes de terminar)
@@ -137,10 +146,14 @@ class Trabalho extends Model {
 
         // Pega os trabalhos e ordena para os mais antigos aparecerem primeiro
         $trabalhos = Trabalho::where('status', 0)
+        ->where('problema_id', $id_problema)
         ->limit(Configuracao::$quantProxProcParaRandomizar)
         ->orderBy('ultima_vez_requisitado', 'asc')
         ->get();
 
+        if($trabalhos->count() == 0) {
+            return;
+        }
         $num_rand = rand(0, $trabalhos->count()-1);
         return $trabalhos[$num_rand];
     }
@@ -153,10 +166,4 @@ class Trabalho extends Model {
     private static function add_trabalhos_problema_6($numero_trabalhos) {}
     private static function add_trabalhos_problema_7($numero_trabalhos) {}
 
-    private static function requisitar_trabalho_problema_2() {}
-    private static function requisitar_trabalho_problema_3() {}
-    private static function requisitar_trabalho_problema_4() {}
-    private static function requisitar_trabalho_problema_5() {}
-    private static function requisitar_trabalho_problema_6() {}
-    private static function requisitar_trabalho_problema_7() {}
 }

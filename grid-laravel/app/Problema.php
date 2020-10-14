@@ -13,9 +13,4 @@ class Problema extends Model {
         return Trabalho::$nome_funcao($numero_trabalhos);
     }
 
-    public static function requisitar_trabalho($id_problema) {
-        $nome_funcao = "requisitar_trabalho_problema_" . $id_problema;
-        return Trabalho::$nome_funcao();
-    }
-
 }
