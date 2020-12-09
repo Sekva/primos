@@ -40,27 +40,34 @@ class ProblemasController extends Controller {
         return $this->verTrabalhos($request->id);
     }
 
-    public function requisitarTrabalho($id_problema) {
-        $trabalho = Trabalho::requisitar_trabalho($id_problema);
+    // Método que retorna um trabalho de um dado problema (que segue uma
+    // métrica de escolha).
+    // Ou retorna um determinado trbalho (parametro opcional)
+    public function requisitarTrabalho($id_problema, $id_trabalho = -1) {
+        if($id_trabalho != -1) {
+            $trabalho = Trabalho::find($id_trabalho);
+        } else {
+            $trabalho = Trabalho::requisitar_trabalho($id_problema);
+        }
         if($trabalho) {
-            return view('problemas.requisitar', ['trabalho' => $trabalho]);
+            return response()->json($trabalho, 201);
         }
         return "Erro, nenhum trabalho foi encontrado";
     }
 
-    public function attStatusTrabalho($id_trabalho, $status) {
-        $trabalho = Trabalho::attStatus($id_trabalho, $status);
-        return view('problemas.requisitar', ['trabalho' => $trabalho]);
+    public function attStatusTrabalho(Request $request) {
+        $id_trabalho = $request->trabalho_id;
+        $status = $request->status;
+
+        // TODO: fazer filtros e tratamentos para os dados que serão entregues e recebidos pela api (ex: ver se estatus existe)
+
+        $trabalho = Trabalho::attStatus($trabalho_id, $status);
+        return response()->json($trabalho, 201); //TODO: estudar e atualizar o numero do tipo de resposta do servidor
     }
 
-    // public function enviarResposta(Request $req) {
-    //     $resposta = new Resposta;
-    //     // return var_dump($req);
-    //     $resposta->conteudo = $req['conteudo'];
-    //     $resposta->problema_id = $req['problema_id'];
-    //     $resposta->trabalho_id = $req['trabalho_id'];
-    //     $resposta->save();
-    //     echo $resposta->id;
-    // }
+    public function enviarResposta(Request $req) {
+        $resposta = Resposta::novaResposta($req->trabalho_id, $req->conteudo);
+        return response()->json($resposta, 201);
+    }
 
 }

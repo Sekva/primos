@@ -7,6 +7,12 @@ use App\Configuracao;
 
 class Trabalho extends Model {
 
+    protected $hidden = ['created_at', 'updated_at'];
+
+    const Status_livre = 0;
+    const Status_processando = 1;
+    const Status_finalizado = 3;
+
     public function problema() {
         return $this->belongsTo("App\Problema");
     }
@@ -15,10 +21,10 @@ class Trabalho extends Model {
         return $this->belongsTo("App\Trabalho");
     }
 
-    public static function attStatus($id_trabalho, $status) {
-        $trabalho = Trabalho::find($id_trabalho);
+    public static function attStatus($trabalho_id, $status) {
+        $trabalho = Trabalho::find($trabalho_id);
         $trabalho->status = $status;
-        if($status == 1 || $status == '1') {
+        if(intval($status) == Trabalho::Status_processando) {
             $trabalho->ultima_vez_requisitado = time();
         }
         $trabalho->save();
@@ -31,20 +37,20 @@ class Trabalho extends Model {
 
         # Coleta todos os trabalhos desatualizados
         $trabalhos_desatualizados = Trabalho::where([
-            ['status', '=', 1],
+            ['status', '=', Trabalho::Status_processando],
             ['ultima_vez_requisitado', '<=', $tempoLimite
         ]])
         ->get();
 
         # Atualiza o status dos trabalhos desatualizados
         foreach ($trabalhos_desatualizados  as $t) {
-            self::attStatus($t->id, 0);
+            self::attStatus($t->id, Trabalho::Status_livre);
         }
     }
 
     // Esse método não recebe o número de tralhalhos a ser adicionado
     // Mas sim a quantidade de números p's
-    private static function add_trabalhos_problema_1($quant_ps_add) {
+    public static function add_trabalhos_problema_1($quant_ps_add) {
         /*
         O campo 'conteudo' armazena os dados bo seguinte formato:
         {
@@ -67,7 +73,7 @@ class Trabalho extends Model {
             if($count_ps_add == 0) {
 
                 // Seleciona o ultimo processo adicionado
-                $resultado = Trabalho::where('status', '!=', 2)->max('id');
+                $resultado = Trabalho::max('id');
                 $resultado = Trabalho::find($resultado);
                 if($resultado) {
                     // Caso em que no banco já tem algum dado
@@ -121,7 +127,7 @@ class Trabalho extends Model {
 
             // Adiciona um novo processo
             $novo_trabalho = new Trabalho;
-            $novo_trabalho->status = 0;
+            $novo_trabalho->status = Trabalho::Status_livre;
 
             $conteudo_novo_trabalho = ['p' => $valor_inicial_p,
                 'q' => $valor_inicial_q,
@@ -145,25 +151,27 @@ class Trabalho extends Model {
         }
 
         // Pega os trabalhos e ordena para os mais antigos aparecerem primeiro
-        $trabalhos = Trabalho::where('status', 0)
+        $trabalhos = Trabalho::where('status', Trabalho::Status_livre)
         ->where('problema_id', $id_problema)
         ->limit(Configuracao::$quantProxProcParaRandomizar)
         ->orderBy('ultima_vez_requisitado', 'asc')
+        ->select('id')
         ->get();
 
         if($trabalhos->count() == 0) {
             return;
         }
         $num_rand = rand(0, $trabalhos->count()-1);
-        return $trabalhos[$num_rand];
+        $trabalho_selecionado = Trabalho::find($trabalhos[$num_rand]);
+        return $trabalho_selecionado;
     }
 
 
-    private static function add_trabalhos_problema_2($numero_trabalhos) {}
-    private static function add_trabalhos_problema_3($numero_trabalhos) {}
-    private static function add_trabalhos_problema_4($numero_trabalhos) {}
-    private static function add_trabalhos_problema_5($numero_trabalhos) {}
-    private static function add_trabalhos_problema_6($numero_trabalhos) {}
-    private static function add_trabalhos_problema_7($numero_trabalhos) {}
+    public static function add_trabalhos_problema_2($numero_trabalhos) {}
+    public static function add_trabalhos_problema_3($numero_trabalhos) {}
+    public static function add_trabalhos_problema_4($numero_trabalhos) {}
+    public static function add_trabalhos_problema_5($numero_trabalhos) {}
+    public static function add_trabalhos_problema_6($numero_trabalhos) {}
+    public static function add_trabalhos_problema_7($numero_trabalhos) {}
 
 }
