@@ -15,7 +15,7 @@ class Resposta extends Model {
     public static function novaResposta($trabalho_id, $conteudo) {
         $resposta = new Resposta();
         $resposta->trabalho_id = $trabalho_id;
-        $resposta->conteudo = $conteudo;
+        $resposta->conteudo = json_encode($conteudo);
         $trabalho = Trabalho::find($trabalho_id)->get();
         $resposta->problema_id = $trabalho[0]['problema_id'];
         $resposta->save();

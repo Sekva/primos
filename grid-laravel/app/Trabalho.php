@@ -23,6 +23,9 @@ class Trabalho extends Model {
 
     public static function attStatus($trabalho_id, $status) {
         $trabalho = Trabalho::find($trabalho_id);
+        if(!$trabalho) {
+            return false;
+        }
         $trabalho->status = $status;
         if(intval($status) == Trabalho::Status_processando) {
             $trabalho->ultima_vez_requisitado = time();
