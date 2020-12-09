@@ -10,9 +10,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get("/", function() {
     return 'Rota para a api. Veja documentação em: <a href="httpp://www.abc.com.br">site</a>';
 });
-Route::get("/requisitar/{id_problema}", "ProblemasController@requisitarTrabalho")->name(".requisitar");
-Route::put("/att_status", "ProblemasController@attStatusTrabalho")->name(".attStatus");
-Route::post("/enviar_resposta", "ProblemasController@enviarResposta")->name(".enviarResposta");
+
+Route::get("/requisitar/{id_problema}", "TrabalhosController@requisitarTrabalho")->name(".requisitar");
+Route::put("/att_status", "TrabalhosController@attStatusTrabalho")->name(".attStatus");
+Route::post("/enviar_resposta", "TrabalhosController@enviarResposta")->name(".enviarResposta");
 
 
 //
