@@ -1,7 +1,5 @@
 #!/bin/python3
 
-
-import requests
 import sys
 import os
 import subprocess
@@ -9,7 +7,9 @@ import time
 import threading
 from ctypes import *
 
-from trabalhar import trabalhar
+from comunicacao_api import getVersaoApi
+from problema_1 import trabalhar_prob_1
+# from problema_1 import trabalhar_prob_2
 
 
 versao = "1.2.0"
@@ -17,12 +17,11 @@ numeroDeThreads = 1
 nomeCliente = "user"
 
 
-url_global = "http://173.82.94.37/"
+url = "http://173.82.94.37/"
 
 id_prob = 1
 
 diretorio_dados = "./dados/"
-
 
 libtqp = CDLL("./libtqp.so")
 funcao_lib = libtqp._Z4progtPcS_
@@ -45,17 +44,12 @@ processamento_contador = False
 
 printar = True
 
-def getVersao():
-    url = url_global + 'api/versao'
-    res = requests.post(url)
-    return res.text
-
 def verificarAtualizacao():
-        resultadoGetVersao = getVersao()
+        resultadoGetVersao = getVersaoApi(url)
         if(versao != resultadoGetVersao):
             print("\n\n-> !!CLIENTE DESATUALIZADO!!;")
             print("Por favor, baixe a nova versão ou requisite o administrador;")
-            print("Download da nova varsão: " + url_global + "download")
+            print("Download da nova varsão: " + url + "download")
             print("Contato: mateusbaltazar9@gmail.com")
 
             print("Versão desatualizada desse programa: " + versao + ";")
@@ -65,7 +59,7 @@ def verificarAtualizacao():
 
 def proc_start(thread_num):
 
-    print("Iniciando thread {:10d}".format(threading.get_native_id()))
+    print("Iniciando thread")
     global count_ja_processado
     while True:
         if processamento_contador:
@@ -78,12 +72,19 @@ def proc_start(thread_num):
         # Chamada de processamento de vários tipos de trabalhos
         resultado_processamento = False
         if(id_prob == 1):
-            resultado_processamento = trabalhar_prob1(url_global, id_prob, diretorio_dados, funcao_lib)
-        elif(id_prob == 2):
-            resultado_processamento = trabalhar_prob2(url_global, id_prob, diretorio_dados, funcao_lib)
+            resultado_processamento = trabalhar_prob_1(url, id_prob, diretorio_dados, funcao_lib)
+        # elif(id_prob == 2):
+        #     resultado_processamento = trabalhar_prob_2(url, id_prob, diretorio_dados, funcao_lib)
+        # elif(id_prob == 3):
+        #     resultado_processamento = trabalhar_prob_3(url, id_prob, diretorio_dados, funcao_lib)
+        # elif(id_prob == 4):
+        #     resultado_processamento = trabalhar_prob_4(url, id_prob, diretorio_dados, funcao_lib)
+        # elif(id_prob == 5):
+        #     resultado_processamento = trabalhar_prob_5(url, id_prob, diretorio_dados, funcao_lib)
+
 
         if(not resultado_processamento):
-            print("[{:10d}] Erro ao tentar processar. Tentando novamente em 10 segundos.\nPor Favor, informe esse erro ao administrador.".format(threading.get_native_id()))
+            print("Erro ao tentar processar. Tentando novamente em 5 segundos.")
             time.sleep(10)
         else:
             count_ja_processado += 1
@@ -115,7 +116,7 @@ for i in range(len(sys.argv)):
         print("Para criar um usuário, contate o administrador [TEMPORÁRIO]")
         print("Contato: mateusbaltazar9@gmail.com")
         print("!Obrigado por ajudar!")
-        print("Site:", url_global)
+        print("Site:", url)
         print()
         exit()
 
@@ -128,7 +129,7 @@ for i in range(len(sys.argv)):
     if sys.argv[i] == "-probs":
         print("\nID e nome dos problemas que você pode contribuir! =D\n")
         for i in nomes_prob:
-            print("-> ID:[" + str(i[0]) + "]; Nome:[" + str(i[1]) + "]; URL:[" + str(url_global) + "problemas/" + str(i[0]) + ']')
+            print("-> ID:[" + str(i[0]) + "]; Nome:[" + str(i[1]) + "]; URL:[" + str(url) + "problemas/" + str(i[0]) + ']')
         print()
         exit()
 
@@ -145,7 +146,8 @@ for i in range(len(sys.argv)):
                 break
 
     if sys.argv[i] == "-host":
-        url_global = str(sys.argv[i + 1])
+        url = str(sys.argv[i + 1])
+        print("Você optou por utilizar o host:", url)
 
     if sys.argv[i] == "-n":
         if ((i + 1 < len(sys.argv))) and str(sys.argv[i + 1]).isnumeric():
@@ -156,7 +158,7 @@ for i in range(len(sys.argv)):
             exit()
 
     if sys.argv[i] == "-v":
-        versao_mais_atual = getVersao()
+        versao_mais_atual = getVersaoApi(url)
         print("\n-> Versão Mais atual: " + versao_mais_atual)
         print("-> Versão desse programa: " + versao)
 
