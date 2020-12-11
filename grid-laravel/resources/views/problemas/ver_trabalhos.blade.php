@@ -16,7 +16,13 @@ th {
 <h3>Quantidade de Trabalhos Processados: {{$quant_trabalhos_processados}}</h3>
 
 @php
-    $num_pag_atual = $_GET["page"];
+    // Verifica se o parâmetro da páginação existe na url
+    // Se não existir, ele redireciona para a primeira página
+    if( !array_key_exists("page", $_GET) || !$_GET["page"] || !isset($_GET["page"]) ) {
+        $num_pag_atual = 0;
+    } else {
+        $num_pag_atual = $_GET["page"];
+    }
 @endphp
 
 <p>Página atual: {{ $num_pag_atual }}</p>
