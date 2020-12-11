@@ -11,8 +11,23 @@ th {
 }
 </style>
 
-<h1>Ver Trabalhos do prob_{{$problema->id}}</h1>
-<h3>Quantidade de Trabalhos: {{$trabalhos->count()}}</h3>
+<h1>Trabalhos do Problema: {{$problema->nome}}</h1>
+<h3>Quantidade Total de Trabalhos: {{$quant_trabalhos_total}}</h3>
+<h3>Quantidade de Trabalhos Processados: {{$quant_trabalhos_processados}}</h3>
+
+@php
+    $num_pag_atual = $_GET["page"];
+@endphp
+
+<p>Página atual: {{ $num_pag_atual }}</p>
+@if (is_numeric($num_pag_atual))
+    @if (intval($num_pag_atual) > 0)
+        <a href={{ '?page=' . strval($num_pag_atual - 1) }}>pag {{ $num_pag_atual - 1}}</a>
+    @endif
+    <a href={{ '?page=' . strval($num_pag_atual + 1) }}>pag {{ $num_pag_atual + 1}}</a>
+@endif
+
+<p>Máximo de {{ $numero_tralhos_por_pagina }} Trabalhos por página</p>
 <table>
     <tr>
         <th>id</th>

@@ -29,9 +29,21 @@ class TrabalhosController extends Controller {
     // Mostra todos os trabalhos
     public function verTrabalhos($id_problema) {
         $problema = Problema::find($id_problema);
-        $trabalhos = Trabalho::where('problema_id', $id_problema)->get();
-        return view('problemas.ver_trabalhos', ['problema' => $problema,
-            'trabalhos' => $trabalhos]);
+        $quant_trabalhos_total = Trabalho::where('problema_id', $id_problema)->count();
+        $quant_trabalhos_processados = Trabalho::where('problema_id', $id_problema)
+            ->where('status', Trabalho::Status_finalizado)->count();
+
+        $numero_tralhos_por_pagina = 50;
+        $trabalhos = Trabalho::where('problema_id', $id_problema)->paginate(100);
+        return view('problemas.ver_trabalhos',
+                [
+                    'problema' => $problema,
+                    'trabalhos' => $trabalhos,
+                    'numero_tralhos_por_pagina' => $numero_tralhos_por_pagina,
+                    'quant_trabalhos_total' => $quant_trabalhos_total,
+                    'quant_trabalhos_processados' => $quant_trabalhos_processados,
+                ]
+            );
     }
 
     // Método que retorna a view de adição de trabalhos para um problema
