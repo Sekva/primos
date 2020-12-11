@@ -19,9 +19,9 @@ def trabalhar_prob_1(url, problema_id, diretorio_dados, funcao_lib):
     if(len(resposta) > 0):
         for r in resposta:
             enviarResposta(url, trabalho['id'], r)
-            # Ao enviar uma resposta, o servidor atualiza o status do processo automaticamente
+            # Ao enviar uma resposta, o servidor atualiza o status do trabalho automaticamente
     else:
-        # Atualiza o status para Processando
+        # Atualiza o status para processado (via cliente)
         if(str(attStatus(url, trabalho['id'], 3)['status']) != '3'):
             return False
 

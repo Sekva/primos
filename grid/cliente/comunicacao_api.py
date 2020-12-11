@@ -41,8 +41,8 @@ def attStatus(url, trabalho_id, status):
 def enviarResposta(url, trabalho_id, conteudo):
     flag = False
     res = ''
+    url = url + 'api/enviar_resposta/'
     while(not flag):
-        url = url + 'api/enviar_resposta/'
         form = "{\"trabalho_id\":%i, \"conteudo\":%s}" % (trabalho_id, conteudo)
         print(form)
         res = requests.post(url, data=json.loads(form))
