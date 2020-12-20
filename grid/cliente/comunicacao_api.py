@@ -45,6 +45,7 @@ def enviarResposta(url, trabalho_id, conteudo):
     while(not flag):
         form = "{\"trabalho_id\":%i, \"conteudo\":%s}" % (trabalho_id, conteudo)
         print(form)
+        # res = requests.post(url, data=json.loads(form))
         res = requests.post(url, data=json.loads(form))
         if(res.status_code != 201): # code: Created
             print(f"!Erro ao salvar a resposta!. status_code: {res.status_code}")
