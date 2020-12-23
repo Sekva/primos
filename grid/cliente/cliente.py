@@ -179,7 +179,7 @@ for i in range(len(sys.argv)):
             exit()
 
     if sys.argv[i] == "-d":
-        if ((i + 1 < len(sys.argv))) and str(sys.argv[i + 1]).isalpha():
+        if ((i + 1 < len(sys.argv))) and os.path.exists(str(sys.argv[i + 1])):
             diretorio_dados = str(sys.argv[i + 1])
         else:
             print("\nDiretório Inválido")
