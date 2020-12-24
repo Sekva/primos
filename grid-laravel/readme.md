@@ -43,3 +43,8 @@ Para ver os usuários do banco e os bancos criados:
 SELECT user FROM mysql.user;
 SHOW DATABASES;
 ```
+
+Lembrar de descomentar a linha a seguir em 'php.ini'.
+```ini
+extension=pdo_mysql
+```
