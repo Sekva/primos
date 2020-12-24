@@ -84,8 +84,11 @@ class TrabalhosController extends Controller {
     }
 
     // Recebe a submissão de uma resposta
-    public function enviarResposta(Request $req) {
-        $resposta = Resposta::novaResposta($req->trabalho_id, $req->conteudo);
+    public function enviarResposta(Request $request) {
+        $resposta = Resposta::novaResposta($request->trabalho_id, $request->conteudo);
+        if($resposta == false) {
+            return response()->json($request, 406); // Erro
+        }
         return response()->json($resposta, 201); // Created
     }
 

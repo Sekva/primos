@@ -43,6 +43,7 @@ count_ja_processado = 0
 processamento_contador = False
 
 printar = True
+slogan = True
 
 def verificarAtualizacao():
         resultadoGetVersao = getVersaoApi(url)
@@ -106,6 +107,7 @@ for i in range(len(sys.argv)):
         print("[-t <número de threads>] para indicar a quantidade de threads")
         print("[-d <diretório dos dados>] para indicar das listas de dados")
         print("[-q] modo silencioso")
+        print("[-no-slogan] pula o slogan inicial")
         print("[-host] para indicar o servidor (opcional)")
         print("\t exemplo: -host http://localhost/")
 
@@ -187,36 +189,43 @@ for i in range(len(sys.argv)):
 
     if sys.argv[i] == "-q":
         printar = False
+        slogan = False
 
-time.sleep(1/4)
-print("--------------------------------------")
-time.sleep(1/4)
-print("   mmm  mmmmm  mmmmm  mmmm  ")
-time.sleep(1/4)
-print(" m\"   \" #   \"#   #    #   \"m")
-time.sleep(1/4)
-print(" #   mm #mmmm\"   #    #    #")
-time.sleep(1/4)
-print(" #    # #   \"m   #    #    #")
-time.sleep(1/4)
-print("  \"mmm\" #    \" mm#mm  #mmm\" ")
-time.sleep(1/4)
-print("--------------------------------------")
-time.sleep(1/5)
-print("by: MBaltz && Sekva | (GITHUB)")
-time.sleep(1/3)
-print("--------------------------------------")
-time.sleep(1/2)
+    if sys.argv[i] == "-no-slogan":
+        slogan = False
 
-print("-> Obrigado por contribuir! <-")
-time.sleep(1/3)
-print("--------------------------------------")
-if(nomeCliente != "user"):
-    time.sleep(1/3)
-    print("Está ajudando bastante, " + nomeCliente + "! S2")
-    time.sleep(1/2)
+
+
+if(slogan):
+    time.sleep(1/4)
     print("--------------------------------------")
-time.sleep(1/2)
+    time.sleep(1/4)
+    print("   mmm  mmmmm  mmmmm  mmmm  ")
+    time.sleep(1/4)
+    print(" m\"   \" #   \"#   #    #   \"m")
+    time.sleep(1/4)
+    print(" #   mm #mmmm\"   #    #    #")
+    time.sleep(1/4)
+    print(" #    # #   \"m   #    #    #")
+    time.sleep(1/4)
+    print("  \"mmm\" #    \" mm#mm  #mmm\" ")
+    time.sleep(1/4)
+    print("--------------------------------------")
+    time.sleep(1/5)
+    print("by: MBaltz && Sekva | (GITHUB)")
+    time.sleep(1/3)
+    print("--------------------------------------")
+    time.sleep(1/2)
+
+    print("-> Obrigado por contribuir! <-")
+    time.sleep(1/3)
+    print("--------------------------------------")
+    if(nomeCliente != "user"):
+        time.sleep(1/3)
+        print("Está ajudando bastante, " + nomeCliente + "! S2")
+        time.sleep(1/2)
+        print("--------------------------------------")
+    time.sleep(1/2)
 
 # Só pra carregar a lista dos primos antes de iniciar as threads
 args = ""

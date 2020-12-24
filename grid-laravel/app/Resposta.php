@@ -16,8 +16,11 @@ class Resposta extends Model {
         $resposta = new Resposta();
         $resposta->trabalho_id = $trabalho_id;
         $resposta->conteudo = json_encode($conteudo);
-        $trabalho = Trabalho::find($trabalho_id)->get();
-        $resposta->problema_id = $trabalho[0]['problema_id'];
+        $trabalho = Trabalho::find($trabalho_id);
+        if(!$trabalho) {
+            return false;
+        }
+        $resposta->problema_id = $trabalho['problema_id'];
         $resposta->save();
 
         // Atualiza o status daquele trabalho para finalizado
