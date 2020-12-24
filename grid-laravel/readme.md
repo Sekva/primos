@@ -20,3 +20,26 @@
 - id_problema: int
 - id_trabalho: int
 - conteudo: json
+
+
+### Para criar o usuário e banco de dados no mysql:
+```bash
+$ mysql
+```
+Se o comando de cima barrar por conta de privilégio:
+```bash
+$ mysql -u root -p
+```
+```sql
+CREATE DATABASE pesquisa;
+CREATE USER 'pesquisa'@'localhost' IDENTIFIED BY 'pesquisa';
+GRANT ALL PRIVILEGES ON pesquisa.* TO 'pesquisa'@'localhost';
+FLUSH PRIVILEGES;
+quit
+```
+
+Para ver os usuários do banco e os bancos criados:
+```sql
+SELECT user FROM mysql.user;
+SHOW DATABASES;
+```
