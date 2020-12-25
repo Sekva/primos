@@ -22,7 +22,7 @@
 
         // Função definida para criação de um trabalho (processo)
         // Tendo k padrão = 99
-        public static function criar($quant_add, $quantidade_teste = 5000, $k = 2) {
+        public static function criar($quant_add) {
 
             $connect = parent::dbConnect();
 

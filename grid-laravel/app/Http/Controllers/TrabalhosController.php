@@ -35,7 +35,8 @@ class TrabalhosController extends Controller {
 
         $numero_tralhos_por_pagina = 50;
         $trabalhos = Trabalho::where('problema_id', $id_problema)->paginate(100);
-        return view('problemas.ver_trabalhos',
+        $arquivo = 'problemas.ver_trabalho_' . $id_problema;
+        return view($arquivo,
                 [
                     'problema' => $problema,
                     'trabalhos' => $trabalhos,

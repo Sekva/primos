@@ -39,16 +39,41 @@ class Trabalho extends Model {
         $tempoLimite = $time - Configuracao::$tempoProcessoAdormecido;
 
         # Coleta todos os trabalhos desatualizados
-        $trabalhos_desatualizados = Trabalho::where([
-            ['status', '=', Trabalho::Status_processando],
-            ['ultima_vez_requisitado', '<=', $tempoLimite
-        ]])
-        ->get();
+        $trabalhos_desatualizados = Trabalho::where(
+            [
+                ['status', '=', Trabalho::Status_processando],
+                ['ultima_vez_requisitado', '<=', $tempoLimite],
+            ]
+        )->get(); // Sim, dei um \n pra verem que isso é um where
 
         # Atualiza o status dos trabalhos desatualizados
         foreach ($trabalhos_desatualizados  as $t) {
             self::attStatus($t->id, Trabalho::Status_livre);
         }
+    }
+
+
+    public static function requisitar_trabalho($id_problema) {
+        $ran = rand(1, Configuracao::$randAttProcAdormecidos);
+        if($ran == 1) {
+            // Atualizar processos adormecidor (cliente parou antes de terminar)
+            self::varrerEAtualizarProcessos();
+        }
+
+        // Pega os trabalhos e ordena para os mais antigos aparecerem primeiro
+        $trabalhos = Trabalho::where('status', Trabalho::Status_livre)
+        ->where('problema_id', $id_problema)
+        ->limit(Configuracao::$quantProxProcParaRandomizar)
+        ->orderBy('ultima_vez_requisitado', 'asc')
+        ->select('id')
+        ->get();
+
+        if($trabalhos->count() == 0) {
+            return;
+        }
+        $num_rand = rand(0, $trabalhos->count()-1);
+        $trabalho_selecionado = Trabalho::find($trabalhos[$num_rand]);
+        return $trabalho_selecionado;
     }
 
     // Esse método não recebe o número de tralhalhos a ser adicionado
@@ -76,7 +101,7 @@ class Trabalho extends Model {
             if($count_ps_add == 0) {
 
                 // Seleciona o ultimo processo adicionado
-                $resultado = Trabalho::max('id');
+                $resultado = Trabalho::where('problema_id', 1)->max('id');
                 $resultado = Trabalho::find($resultado);
                 if($resultado) {
                     // Caso em que no banco já tem algum dado
@@ -130,47 +155,71 @@ class Trabalho extends Model {
 
             // Adiciona um novo processo
             $novo_trabalho = new Trabalho;
-            $novo_trabalho->status = Trabalho::Status_livre;
 
-            $conteudo_novo_trabalho = ['p' => $valor_inicial_p,
+            $conteudo_novo_trabalho = [
+                'p' => $valor_inicial_p,
                 'q' => $valor_inicial_q,
-                'k' => $k_atual];
+                'k' => $k_atual
+            ];
             $novo_trabalho->conteudo = json_encode($conteudo_novo_trabalho);
-
+            $novo_trabalho->status = Trabalho::Status_livre;
             $novo_trabalho->problema_id = 1;
             $novo_trabalho->ultima_vez_requisitado = time();
 
-            // var_dump(json_encode(array($novo_trabalho)));
+            $novo_trabalho->save();
+        }
+    }
+
+
+
+    public static function add_trabalhos_problema_2($numero_trabalhos) {
+        $quantidade_teste = 5000;
+        $k = 4;
+
+        $prox_p = 0;
+        for($i = $numero_trabalhos; $i > 0; $i -= 1) {
+
+            // Para evitar ficar requisitando ao banco de dados
+            // -> Só vai requisitar na primeira iteração
+            if($i == $numero_trabalhos) {
+
+                // Seleciona o ultimo processo adicionado
+                $resultado = Trabalho::where('problema_id', 2)
+                    // Para trabalhar com qualquer k sem interferir um no outro
+                    ->whereJsonContains('conteudo->k', $k)
+                    ->max('id');
+                $resultado = Trabalho::find($resultado);
+
+                // Caso em que no banco já tem algum dado
+                if($resultado) {
+                    $conteudo = json_decode($resultado->conteudo);
+                    $prox_p = intval($conteudo->valor_inicial_p);
+                    $ultima_quant_teste = intval($conteudo->quantidade);;
+                    $prox_p += $ultima_quant_teste;
+                }
+            } else {
+                $prox_p += $quantidade_teste;
+            }
+
+            // Adiciona um novo processo
+            $novo_trabalho = new Trabalho;
+
+            $conteudo_novo_trabalho = [
+                'valor_inicial_p' => $prox_p,
+                'quantidade' => $quantidade_teste,
+                'k' => $k,
+            ];
+            $novo_trabalho->conteudo = json_encode($conteudo_novo_trabalho);
+            $novo_trabalho->status = Trabalho::Status_livre;
+            $novo_trabalho->problema_id = 2;
+            $novo_trabalho->ultima_vez_requisitado = time();
+
             $novo_trabalho->save();
 
         }
     }
 
-    public static function requisitar_trabalho($id_problema) {
-        $ran = rand(1, Configuracao::$randAttProcAdormecidos);
-        if($ran == 1) {
-            // Atualizar processos adormecidor (cliente parou antes de terminar)
-            self::varrerEAtualizarProcessos();
-        }
 
-        // Pega os trabalhos e ordena para os mais antigos aparecerem primeiro
-        $trabalhos = Trabalho::where('status', Trabalho::Status_livre)
-        ->where('problema_id', $id_problema)
-        ->limit(Configuracao::$quantProxProcParaRandomizar)
-        ->orderBy('ultima_vez_requisitado', 'asc')
-        ->select('id')
-        ->get();
-
-        if($trabalhos->count() == 0) {
-            return;
-        }
-        $num_rand = rand(0, $trabalhos->count()-1);
-        $trabalho_selecionado = Trabalho::find($trabalhos[$num_rand]);
-        return $trabalho_selecionado;
-    }
-
-
-    public static function add_trabalhos_problema_2($numero_trabalhos) {}
     public static function add_trabalhos_problema_3($numero_trabalhos) {}
     public static function add_trabalhos_problema_4($numero_trabalhos) {}
     public static function add_trabalhos_problema_5($numero_trabalhos) {}
