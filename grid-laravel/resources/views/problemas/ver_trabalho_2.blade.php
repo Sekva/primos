@@ -38,8 +38,8 @@ th {
     <tr>
         <th>id</th>
         <th>status</th>
-        <th>p</th>
-        <th>q</th>
+        <th>valor_inicial_p</th>
+        <th>quantidade</th>
         <th>k</th>
     </tr>
 @foreach($trabalhos as $t)

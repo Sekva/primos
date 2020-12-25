@@ -8,7 +8,7 @@ import threading
 from ctypes import *
 
 from comunicacao_api import getVersaoApi
-from problema_1 import trabalhar_prob_1
+from problemas import trabalhar
 # from problema_1 import trabalhar_prob_2
 
 
@@ -66,24 +66,14 @@ def proc_start(thread_num):
         if processamento_contador:
             if count_ja_processado >= n_processamentos:
                 print(f"O limite de processos finalizados que o usuário definiu foi atingido!")
-                print(f"[{n_processamentos} processos concluídos]")                
+                print(f"[{n_processamentos} processos concluídos]")
                 exit()
 
         verificarAtualizacao()
 
         # Chamada de processamento de vários tipos de trabalhos
         resultado_processamento = False
-        if(id_prob == 1):
-            resultado_processamento = trabalhar_prob_1(url, id_prob, diretorio_dados, funcao_lib)
-        # elif(id_prob == 2):
-        #     resultado_processamento = trabalhar_prob_2(url, id_prob, diretorio_dados, funcao_lib)
-        # elif(id_prob == 3):
-        #     resultado_processamento = trabalhar_prob_3(url, id_prob, diretorio_dados, funcao_lib)
-        # elif(id_prob == 4):
-        #     resultado_processamento = trabalhar_prob_4(url, id_prob, diretorio_dados, funcao_lib)
-        # elif(id_prob == 5):
-        #     resultado_processamento = trabalhar_prob_5(url, id_prob, diretorio_dados, funcao_lib)
-
+        resultado_processamento = trabalhar(url, id_prob, diretorio_dados, funcao_lib)
 
         if(not resultado_processamento):
             print("Erro ao tentar processar. Tentando novamente em 5 segundos.")
@@ -138,7 +128,8 @@ for i in range(len(sys.argv)):
 
     if sys.argv[i] == "-prob":
         id_prob = int(sys.argv[i + 1])
-        if(id_prob not in nomes_prob[0]):
+        # O for pega só os ids: x[0]
+        if(id_prob not in [x[0] for x in nomes_prob]):
             print("\nO id do problema selecionado não existe!")
             print("Favor, use o parametro -probs para visualizar todos os problemas ativos.")
             print("Na dúvida, utilizar o parâmetro -h.\n")
