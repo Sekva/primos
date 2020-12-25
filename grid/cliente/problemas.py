@@ -57,6 +57,9 @@ def processar_prob_1(url, trabalho_conteudo, diretorio_dados, funcao_lib):
     # separa as linhas do resultado
     linhas = resultado.split('\n')
 
+    count_i = 0
+    # string de retorno com TODAS as resposta para aquele problema
+    str_json_final = "{"
     # pra cada linha do resultado, extrai o dados
     for resposta_achada in linhas:
         if not resposta_achada:
@@ -65,11 +68,13 @@ def processar_prob_1(url, trabalho_conteudo, diretorio_dados, funcao_lib):
         valor_p = int(p_q_r[0])
         valor_q = int(p_q_r[1])
         valor_r = int(p_q_r[2])
-        str_resposta = f"p:{valor_p}, q:{valor_q}, resultado_calculo:{valor_r}"
-        # Esse dumps transforma a string numa string no molde de json
-        vetor_retorno.append(json.dumps(str_resposta))
+        str_aux = str(count_i)+":\"p:"+str(valor_p)+", q:"+str(valor_q)+", resultado_calculo:"+str(valor_r)+"\","
+        str_json_final += str_aux
+        count_i += 1
+    str_json_final += "}"
 
-    return vetor_retorno # vetor de strings (cada string conteúdo da resposta)
+    # Esse dumps transforma a string numa string no molde de json
+    return [json.dumps(str_json_final)] # vetor de strings (cada string conteúdo da resposta)
 
 
 # Responsável pelo processamento dos dados
@@ -92,6 +97,9 @@ def processar_prob_2(url, trabalho_conteudo, diretorio_dados, funcao_lib):
     # separa as linhas do resultado
     linhas = resultado.split('\n')
 
+    count_i = 0
+    # string de retorno com TODAS as resposta para aquele problema
+    str_json_final = "{"
     # pra cada linha do resultado, extrai o dados
     for resposta_achada in linhas:
         if not resposta_achada:
@@ -100,11 +108,13 @@ def processar_prob_2(url, trabalho_conteudo, diretorio_dados, funcao_lib):
         valor_p = int(p_q_k[0])
         valor_q = int(p_q_k[1])
         valor_k = int(p_q_k[2])
-        str_resposta = f"p:{valor_p}, q:{valor_q}, k:{valor_k}"
-        # Esse dumps transforma a string numa string no molde de json
-        vetor_retorno.append(json.dumps(str_resposta))
+        str_aux = str(count_i)+":\"p:"+str(valor_p)+", q:"+str(valor_q)+", k:"+str(valor_k)+"\","
+        str_json_final += str_aux
+        count_i += 1
+    str_json_final += "}"
 
-    return vetor_retorno # vetor de strings (cada string conteúdo da resposta)
+    # Esse dumps transforma a string numa string no molde de json
+    return [json.dumps(str_json_final)] # vetor de strings (cada string conteúdo da resposta)
 
 
 # PARA TESTAR
