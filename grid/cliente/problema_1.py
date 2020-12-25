@@ -13,7 +13,7 @@ def trabalhar_prob_1(url, problema_id, diretorio_dados, funcao_lib):
     if(str(attStatus(url, trabalho['id'], 1)['status']) != '1'):
         return False
 
-    # Realiza o trabalho (soluciona)
+    # Realiza o trabalho (solucionar)
     resposta = processar_prob_1(url, json.loads(trabalho['conteudo']), diretorio_dados, funcao_lib)
 
     if(len(resposta) > 0):

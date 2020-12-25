@@ -174,7 +174,7 @@ class Trabalho extends Model {
 
     public static function add_trabalhos_problema_2($numero_trabalhos) {
         $quantidade_teste = 5000;
-        $k = 4;
+        $k = 2;
 
         $prox_p = 0;
         for($i = $numero_trabalhos; $i > 0; $i -= 1) {

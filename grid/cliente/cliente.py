@@ -65,7 +65,8 @@ def proc_start(thread_num):
     while True:
         if processamento_contador:
             if count_ja_processado >= n_processamentos:
-                print(f"O limite de processos finalizados que o usuário definiu foi atingido! [{n_processamentos} processos concluídos]")
+                print(f"O limite de processos finalizados que o usuário definiu foi atingido!")
+                print(f"[{n_processamentos} processos concluídos]")                
                 exit()
 
         verificarAtualizacao()
