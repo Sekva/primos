@@ -33,6 +33,9 @@ class TrabalhosController extends Controller {
         $quant_trabalhos_processados = Trabalho::where('problema_id', $id_problema)
             ->where('status', Trabalho::Status_finalizado)->count();
 
+        $quant_trabalhos_processando = Trabalho::where('problema_id', $id_problema)
+            ->where('status', Trabalho::Status_processando)->count();
+
         $numero_tralhos_por_pagina = 50;
         $trabalhos = Trabalho::where('problema_id', $id_problema)->paginate(100);
         $arquivo = 'problemas.ver_trabalho_' . $id_problema;
@@ -43,6 +46,7 @@ class TrabalhosController extends Controller {
                     'numero_tralhos_por_pagina' => $numero_tralhos_por_pagina,
                     'quant_trabalhos_total' => $quant_trabalhos_total,
                     'quant_trabalhos_processados' => $quant_trabalhos_processados,
+                    'quant_trabalhos_processando' => $quant_trabalhos_processando,
                 ]
             );
     }

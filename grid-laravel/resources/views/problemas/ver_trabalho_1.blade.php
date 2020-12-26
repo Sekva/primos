@@ -14,6 +14,7 @@ th {
 <h1>Trabalhos do Problema: {{$problema->nome}}</h1>
 <h3>Quantidade Total de Trabalhos: {{$quant_trabalhos_total}}</h3>
 <h3>Quantidade de Trabalhos Processados: {{$quant_trabalhos_processados}}</h3>
+<h3>Quantidade de Trabalhos Processando: {{$quant_trabalhos_processando}}</h3>
 
 @php
     // Verifica se o parâmetro da páginação existe na url

@@ -24,7 +24,7 @@ def trabalhar(url, problema_id, diretorio_dados, funcao_lib):
         print("Número de processo desconhecido!")
         exit()
 
-    if(len(resposta) > 0):
+    if(resposta != False):
         for r in resposta:
             enviarResposta(url, trabalho['id'], r)
             # Ao enviar uma resposta, o servidor atualiza o status do trabalho automaticamente
@@ -73,8 +73,11 @@ def processar_prob_1(url, trabalho_conteudo, diretorio_dados, funcao_lib):
         count_i += 1
     str_json_final += "}"
 
-    # Esse dumps transforma a string numa string no molde de json
-    return [json.dumps(str_json_final)] # vetor de strings (cada string conteúdo da resposta)
+    if(str_json_final == "{"):
+        return False
+    else :
+        # Esse dumps transforma a string numa string no molde de json
+        return [json.dumps(str_json_final)]
 
 
 # Responsável pelo processamento dos dados
@@ -113,8 +116,11 @@ def processar_prob_2(url, trabalho_conteudo, diretorio_dados, funcao_lib):
         count_i += 1
     str_json_final += "}"
 
-    # Esse dumps transforma a string numa string no molde de json
-    return [json.dumps(str_json_final)] # vetor de strings (cada string conteúdo da resposta)
+    if(str_json_final == "{"):
+        return False
+    else :
+        # Esse dumps transforma a string numa string no molde de json
+        return [json.dumps(str_json_final)]
 
 
 # PARA TESTAR
