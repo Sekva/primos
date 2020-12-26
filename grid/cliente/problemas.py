@@ -73,7 +73,7 @@ def processar_prob_1(url, trabalho_conteudo, diretorio_dados, funcao_lib):
         count_i += 1
     str_json_final += "}"
 
-    if(str_json_final == "{"):
+    if(str_json_final == "{}"):
         return False
     else :
         # Esse dumps transforma a string numa string no molde de json
@@ -116,7 +116,7 @@ def processar_prob_2(url, trabalho_conteudo, diretorio_dados, funcao_lib):
         count_i += 1
     str_json_final += "}"
 
-    if(str_json_final == "{"):
+    if(str_json_final == "{}"):
         return False
     else :
         # Esse dumps transforma a string numa string no molde de json
