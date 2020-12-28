@@ -80,7 +80,16 @@ char* preparar_problema2(char* args) {
     return problema_2(idx_min, idx_max, grau_ge);
 
 }
-char* preparar_problema3(char* args) {return (char*) "3";}
+char* preparar_problema3(char* args) {
+    std::string args_str(args);
+    std::vector<std::string> vec_args = explode(args_str, '/');
+
+    unsigned long idx_min = std::stoull(vec_args[0]);
+    unsigned long idx_max = std::stoull(vec_args[1]);
+
+    return problema_3(idx_min, idx_max);
+}
+
 char* preparar_problema4(char* args) {return (char*) "4";}
 char* preparar_problema5(char* args) {return (char*) "5";}
 char* preparar_problema6(char* args) {return (char*) "6";}
