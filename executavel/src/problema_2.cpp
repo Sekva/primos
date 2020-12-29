@@ -35,7 +35,7 @@ char* problema_2(
       // Como a lista é ordenada, então diff é sempre positivo
       if(diff == k_mpz) {
         //std::cout << "p: " << p << ", q: " << q << ", q-p: " << diff << ", p_i: " << idx << ", q_i: " << idx+1 << "\n";
-        stringStream << p << "/" << q << "/" << diff << "/" << idx << "/" << idx+1 << "\n";
+        stringStream << p << "/" << q << "/" << diff << "\n";
       }
   }
 
