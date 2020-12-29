@@ -36,6 +36,16 @@ std::vector<std::string> explode(const std::string& str, const char& ch) {
 std::vector<mpz_class> primos;
 char ja_foi_carregado = 0;
 
+
+// TODO: Ler abaixo:
+//    https://trello.com/c/WLr39vYY/103-implementa%C3%A7%C3%B5es-adicionais-grid
+// -> Primeiramente, dividir as listas de primos, por exemplo, dividir várias
+//    listas com 14M de primos cada.
+// -> Fazer sistema de verificação de indices para realizar o carregamento
+//    automático da determianda lista de primo que contém os tais indices.
+//    Por exemplo, se chegou um trabalho com o indice 50M, e cada lista tem
+//    14M, ele deve carregar a lista 3. (pensar como será a utilizacão do
+//    indice nessa lista, por exemplo: lista_3[idx-14M*3])
 void carregar_primos(char* nome_arquivo)  {
     if(ja_foi_carregado) { return; }
   printf("Carregando lista de primos...\n");
