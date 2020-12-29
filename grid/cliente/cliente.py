@@ -32,8 +32,8 @@ funcao_lib.restype = c_char_p
 nomes_prob = [
     [1, "Quadrados Perfeitos"],
     [2, "Primos Gêmeos"],
-    [3, "Mersenne"],
-    [4, "Fermat"],
+    [3, "Primos de Mersenne"],
+    [4, "Primos de Fermat"],
     [5, "Goldbath"],
 ]
 
@@ -81,6 +81,7 @@ def proc_start(thread_num):
             time.sleep(10)
         else:
             count_ja_processado += 1
+        time.sleep(2) # Para evitar problemas e sobrecarga ao servidor
 
 
 # ---------------------------------------------------
@@ -229,4 +230,4 @@ funcao_lib(c_short(0), c_char_p(args.encode("utf-8")), c_char_p(diretorio_dados_
 for i in range(numeroDeThreads):
     #TODO: ir passando um id melhor pra todas as threads, inclusive pro c++
     threading.Thread(target=proc_start, args=[i]).start()
-    time.sleep(2)
+    time.sleep(1)

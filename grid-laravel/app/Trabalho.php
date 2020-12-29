@@ -215,12 +215,52 @@ class Trabalho extends Model {
             $novo_trabalho->ultima_vez_requisitado = time();
 
             $novo_trabalho->save();
-
         }
     }
 
 
-    public static function add_trabalhos_problema_3($numero_trabalhos) {}
+    public static function add_trabalhos_problema_3($numero_trabalhos) {
+        $quantidade_teste = 7000000;
+
+        $prox_p = 0;
+        for($i = $numero_trabalhos; $i > 0; $i -= 1) {
+
+            // Para evitar ficar requisitando ao banco de dados
+            // -> Só vai requisitar na primeira iteração
+            if($i == $numero_trabalhos) {
+
+                // Seleciona o ultimo processo adicionado
+                $resultado = Trabalho::where('problema_id', 2)
+                    ->max('id');
+                $resultado = Trabalho::find($resultado);
+
+                // Caso em que no banco já tem algum dado
+                if($resultado) {
+                    $conteudo = json_decode($resultado->conteudo);
+                    $prox_p = intval($conteudo->valor_inicial_p);
+                    $ultima_quant_teste = intval($conteudo->quantidade);;
+                    $prox_p += $ultima_quant_teste;
+                }
+            } else {
+                $prox_p += $quantidade_teste;
+            }
+
+            // Adiciona um novo processo
+            $novo_trabalho = new Trabalho;
+
+            $conteudo_novo_trabalho = [
+                'valor_inicial_p' => $prox_p,
+                'quantidade' => $quantidade_teste,
+            ];
+            $novo_trabalho->conteudo = json_encode($conteudo_novo_trabalho);
+            $novo_trabalho->status = Trabalho::Status_livre;
+            $novo_trabalho->problema_id = 3;
+            $novo_trabalho->ultima_vez_requisitado = time();
+
+            $novo_trabalho->save();
+        }
+    }
+
     public static function add_trabalhos_problema_4($numero_trabalhos) {}
     public static function add_trabalhos_problema_5($numero_trabalhos) {}
     public static function add_trabalhos_problema_6($numero_trabalhos) {}

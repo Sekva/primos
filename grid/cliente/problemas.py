@@ -15,9 +15,11 @@ def trabalhar(url, problema_id, diretorio_dados, funcao_lib):
 
     # Realiza o trabalho (solucionar)
     if(problema_id == 1):
-        resposta = processar_prob_1(url, json.loads(trabalho['conteudo']), diretorio_dados, funcao_lib)
+        resposta = processar_prob_1(json.loads(trabalho['conteudo']), diretorio_dados, funcao_lib)
     elif(problema_id == 2):
-        resposta = processar_prob_2(url, json.loads(trabalho['conteudo']), diretorio_dados, funcao_lib)
+        resposta = processar_prob_2(json.loads(trabalho['conteudo']), diretorio_dados, funcao_lib)
+    elif(problema_id == 3):
+        resposta = processar_prob_3(json.loads(trabalho['conteudo']), diretorio_dados, funcao_lib)
     # elif():
     #     resposta = processar_prob_1(url, json.loads(trabalho['conteudo']), diretorio_dados, funcao_lib)
     else:
@@ -36,8 +38,8 @@ def trabalhar(url, problema_id, diretorio_dados, funcao_lib):
     return True
 
 
-# Responsável pelo processamento dos dados
-def processar_prob_1(url, trabalho_conteudo, diretorio_dados, funcao_lib):
+# Quadrado perfeito: (p+q)^2 + p*q é quadrado perfeito
+def processar_prob_1(trabalho_conteudo, diretorio_dados, funcao_lib):
     diretorio_dados += 'Lista_A.list'
 
     p = trabalho_conteudo["p"]
@@ -80,8 +82,8 @@ def processar_prob_1(url, trabalho_conteudo, diretorio_dados, funcao_lib):
         return [json.dumps(str_json_final)]
 
 
-# Responsável pelo processamento dos dados
-def processar_prob_2(url, trabalho_conteudo, diretorio_dados, funcao_lib):
+# Primos Gêmeos: |p - q| = k
+def processar_prob_2(trabalho_conteudo, diretorio_dados, funcao_lib):
     diretorio_dados += 'Lista_A.list'
 
     valor_inicial_p = trabalho_conteudo["valor_inicial_p"]
@@ -112,6 +114,49 @@ def processar_prob_2(url, trabalho_conteudo, diretorio_dados, funcao_lib):
         valor_q = int(p_q_k[1])
         valor_k = int(p_q_k[2])
         str_aux = str(count_i)+":\"p:"+str(valor_p)+", q:"+str(valor_q)+", k:"+str(valor_k)+"\","
+        str_json_final += str_aux
+        count_i += 1
+    str_json_final += "}"
+
+    if(str_json_final == "{}"):
+        return False
+    else :
+        # Esse dumps transforma a string numa string no molde de json
+        return [json.dumps(str_json_final)]
+
+
+# Primos de Mersenne: p = log2(q + 1)
+def processar_prob_3(trabalho_conteudo, diretorio_dados, funcao_lib):
+    diretorio_dados += 'Lista_A.list'
+
+    valor_inicial_p = trabalho_conteudo["valor_inicial_p"]
+    quantidade = trabalho_conteudo["quantidade"]
+
+    args = str(valor_inicial_p) + "/" + str(valor_inicial_p+quantidade)
+    print(f"args: {args}")
+    start_time = time.time()
+    # em c_short(x), ele recebe o id do problema
+    p = funcao_lib(c_short(3), c_char_p(args.encode("utf-8")), c_char_p(diretorio_dados.encode("utf-8")))
+    # print("[{:10d}] Processou em {:f} segundos".format(threading.get_native_id(), (time.time() - start_time)))
+    print("Processou em {:f} segundos".format(time.time() - start_time))
+    resultado = str(p.decode("utf-8"))
+    vetor_retorno = []
+
+    # separa as linhas do resultado
+    linhas = resultado.split('\n')
+
+    count_i = 0
+    # string de retorno com TODAS as resposta para aquele problema
+    str_json_final = "{"
+    # pra cada linha do resultado, extrai o dados
+    for resposta_achada in linhas:
+        if not resposta_achada:
+            continue
+        print(resposta_achada)
+        p_q = resposta_achada.split('/')
+        valor_p = int(p_q[0])
+        valor_q = int(p_q[1])
+        str_aux = str(count_i)+":\"p:"+str(valor_p)+", q:"+str(valor_q)+"\","
         str_json_final += str_aux
         count_i += 1
     str_json_final += "}"
