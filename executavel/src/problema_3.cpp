@@ -1,7 +1,6 @@
 #include "global.hpp"
 extern std::vector<mpz_class> primos;
 
-std::ostringstream stringStream;
 
 // Adapted for general use from the original biginteger_log
 // xi = di * 2 ^ ex  ==> log(xi) = log(di) + ex * log(2)
@@ -20,7 +19,10 @@ char* problema_3(
   unsigned long indice_min_p,
   unsigned long indice_max_p) {
 
+  std::ostringstream stringStream;
+
   printf("Rodando problema_3... Problema inverso de Mersenne\n");
+  // p = log2(q + 1)
 
   mpz_class p;
   // Para a verificação de 'n é primo?', como a lista de primos está ordenada,
@@ -35,7 +37,7 @@ char* problema_3(
       mpz_class q_aux;
       for( ; (q_aux = primos[ultimo_i_q_testado]) <= n; ultimo_i_q_testado++) {
         if(n == q_aux) { // Se for primo
-          stringStream << n << "/" << p - 1 << "\n";
+          stringStream << p - 1 << "/" << n << "\n";
         }
       }
     }
