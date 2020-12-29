@@ -16,7 +16,7 @@ char* prog(unsigned short problema, char* args, char* arquivo_primos);
 char* problema_1(unsigned long, unsigned long, unsigned long, unsigned long);
 char* problema_2(unsigned long, unsigned long, unsigned long);
 char* problema_3(unsigned long, unsigned long);
-void problema_4(unsigned long, unsigned long, unsigned long, unsigned long);
+char* problema_4(unsigned long, unsigned long);
 void problema_5(unsigned long, unsigned long, unsigned long, unsigned long);
 void problema_6(unsigned long, unsigned long, unsigned long, unsigned long);
 void problema_7(unsigned long, unsigned long, unsigned long, unsigned long);

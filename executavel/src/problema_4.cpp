@@ -1,32 +1,43 @@
 #include "global.hpp"
 extern std::vector<mpz_class> primos;
 
-void problema_4(
-        unsigned long indice_min_p,
-        unsigned long indice_max_p,
-        unsigned long indice_min_q,
-        unsigned long indice_max_q) {
+#include <string>
+char* problema_4(
+  unsigned long indice_min_p,
+  unsigned long indice_max_p) {
 
-  printf("Rodando problema_4... Problema inverso de Fermat\n");
+  std::ostringstream stringStream;
 
-  /*
-  unsigned long p;
+  printf("Rodando problema_3... Problema inverso de Mersenne\n");
+  // q = log2(log2(p - 1))
+
+  mpz_class p;
+  // Para a verificação de 'n é primo?', como a lista de primos está ordenada,
+  // a busca por n dentro do vetor de primos está sendo otimizado ao fazer
+  // a procura a partir do ultimo primo mais próximo de n da iteração anterior.
+  unsigned long ultimo_i_q_testado = 0;
   for(unsigned long int i = indice_min_p; i < indice_max_p; i++) {
-      p = primos[i];
-      long double n = log2l(log2l(p-1));
-      if(e_inteiro(n)) {
-          printf("p: %ld, n: %Lf\n", p, n);
+    p = primos[i];
+    p = p - 1; // p - 1
+    // n = log2(log2(p - 1))
+    mpz_class n_aux = log_dois(p.get_mpz_t());
+    double n = log_dois(n_aux.get_mpz_t());
+    if(e_inteiro(n)) { // Se for um valor inteiro
+      mpz_class q_aux;
+      for( ; (q_aux = primos[ultimo_i_q_testado]) <= n; ultimo_i_q_testado++) {
+        if(n == q_aux) { // Se for primo
+          stringStream << p + 1 << "/" << n << "\n";
+        }
       }
+    }
   }
 
-  unsigned long q;
-  for(unsigned long int i = indice_min_q; i < indice_max_q; i++) {
-      q = primos[i];
-      long double n = log2l(log2l(q-1));
-      if(e_inteiro(n)) {
-          printf("q: %ld, n: %Lf\n", q, n);
-      }
+  std::string str_return = stringStream.str();
+  char* char_p_ret = (char*) calloc(str_return.length()+1 , sizeof(char));
+  for(int i = 0; i < (int) str_return.length(); i++) {
+      char_p_ret[i] = str_return[i];
   }
+  char_p_ret[str_return.length()+1] = '\0';
+  return char_p_ret;
 
-  */
 }

@@ -1,19 +1,6 @@
 #include "global.hpp"
 extern std::vector<mpz_class> primos;
 
-
-// Adapted for general use from the original biginteger_log
-// xi = di * 2 ^ ex  ==> log(xi) = log(di) + ex * log(2)
-double biginteger_log_modified(mpz_t x) {
-    signed long int ex;
-    const double di = mpz_get_d_2exp(&ex, x);
-    // std::cout << di << " " << (double) ex << " log(di):" << log2(di) << std::endl;
-    // return log2(di) + log2(2) * (double) ex; // "Generalizada (precisa entender melhor)"
-    return log2(di) + (double) ex; // Específico pra log2
-}
-
-// char* mpz_e_inteiro(mpz_t) {
-// }
 #include <string>
 char* problema_3(
   unsigned long indice_min_p,
@@ -32,7 +19,7 @@ char* problema_3(
   for(unsigned long int i = indice_min_p; i < indice_max_p; i++) {
     p = primos[i];
     p = p + 1; // p + 1
-    double n = biginteger_log_modified(p.get_mpz_t()); // log2(p + 1)
+    double n = log_dois(p.get_mpz_t()); // log2(p + 1)
     if(e_inteiro(n)) { // Se for um valor inteiro
       mpz_class q_aux;
       for( ; (q_aux = primos[ultimo_i_q_testado]) <= n; ultimo_i_q_testado++) {

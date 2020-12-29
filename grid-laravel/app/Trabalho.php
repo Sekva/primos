@@ -76,6 +76,7 @@ class Trabalho extends Model {
         return $trabalho_selecionado;
     }
 
+    // Quadrado perfeito: (p+q)^2 + p*q é quadrado perfeito
     // Esse método não recebe o número de tralhalhos a ser adicionado
     // Mas sim a quantidade de números p's
     public static function add_trabalhos_problema_1($quant_ps_add) {
@@ -171,7 +172,7 @@ class Trabalho extends Model {
     }
 
 
-
+    // Primos Gêmeos: |p - q| = k
     public static function add_trabalhos_problema_2($numero_trabalhos) {
         $quantidade_teste = 50000;
         $k = 2; // (|q-p| = k)
@@ -219,6 +220,7 @@ class Trabalho extends Model {
     }
 
 
+    // Primos de Mersenne: q = log2(p + 1)
     public static function add_trabalhos_problema_3($numero_trabalhos) {
         $quantidade_teste = 7000000;
 
@@ -230,7 +232,7 @@ class Trabalho extends Model {
             if($i == $numero_trabalhos) {
 
                 // Seleciona o ultimo processo adicionado
-                $resultado = Trabalho::where('problema_id', 2)
+                $resultado = Trabalho::where('problema_id', 3)
                     ->max('id');
                 $resultado = Trabalho::find($resultado);
 
@@ -261,7 +263,48 @@ class Trabalho extends Model {
         }
     }
 
-    public static function add_trabalhos_problema_4($numero_trabalhos) {}
+    // Primos de Fermat: q = log2(log2(p - 1))
+    public static function add_trabalhos_problema_4($numero_trabalhos) {
+        $quantidade_teste = 7000000;
+
+        $prox_p = 0;
+        for($i = $numero_trabalhos; $i > 0; $i -= 1) {
+
+            // Para evitar ficar requisitando ao banco de dados
+            // -> Só vai requisitar na primeira iteração
+            if($i == $numero_trabalhos) {
+
+                // Seleciona o ultimo processo adicionado
+                $resultado = Trabalho::where('problema_id', 4)
+                    ->max('id');
+                $resultado = Trabalho::find($resultado);
+
+                // Caso em que no banco já tem algum dado
+                if($resultado) {
+                    $conteudo = json_decode($resultado->conteudo);
+                    $prox_p = intval($conteudo->valor_inicial_p);
+                    $ultima_quant_teste = intval($conteudo->quantidade);;
+                    $prox_p += $ultima_quant_teste;
+                }
+            } else {
+                $prox_p += $quantidade_teste;
+            }
+
+            // Adiciona um novo processo
+            $novo_trabalho = new Trabalho;
+
+            $conteudo_novo_trabalho = [
+                'valor_inicial_p' => $prox_p,
+                'quantidade' => $quantidade_teste,
+            ];
+            $novo_trabalho->conteudo = json_encode($conteudo_novo_trabalho);
+            $novo_trabalho->status = Trabalho::Status_livre;
+            $novo_trabalho->problema_id = 4;
+            $novo_trabalho->ultima_vez_requisitado = time();
+
+            $novo_trabalho->save();
+        }
+    }
     public static function add_trabalhos_problema_5($numero_trabalhos) {}
     public static function add_trabalhos_problema_6($numero_trabalhos) {}
     public static function add_trabalhos_problema_7($numero_trabalhos) {}

@@ -22,5 +22,6 @@ unsigned long e_quadrado_perfeito(unsigned long num);
 
 int e_inteiro(long double num);
 
+double log_dois(mpz_t x);
 
 #endif

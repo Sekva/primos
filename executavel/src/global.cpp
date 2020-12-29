@@ -28,3 +28,12 @@ unsigned long e_quadrado_perfeito(unsigned long num) {
 int e_inteiro(long double num) {
   return roundl(num) == num;
 }
+
+// Ver Fonte: https://stackoverflow.com/a/60820394/9265407
+double log_dois(mpz_t x) {
+    signed long int ex;
+    const double di = mpz_get_d_2exp(&ex, x);
+    // std::cout << di << " " << (double) ex << " log(di):" << log2(di) << std::endl;
+    // return log2(di) + log2(2) * (double) ex; // "Generalizada (precisa entender melhor)"
+    return log2(di) + (double) ex; // Específico pra log2
+}
