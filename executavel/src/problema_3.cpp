@@ -22,7 +22,7 @@ char* problema_3(
   std::ostringstream stringStream;
 
   printf("Rodando problema_3... Problema inverso de Mersenne\n");
-  // p = log2(q + 1)
+  // q = log2(p + 1)
 
   mpz_class p;
   // Para a verificação de 'n é primo?', como a lista de primos está ordenada,

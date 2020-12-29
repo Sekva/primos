@@ -34,7 +34,7 @@ nomes_prob = [
     [2, "Primos Gêmeos"],
     [3, "Primos de Mersenne"],
     [4, "Primos de Fermat"],
-    [5, "Goldbath"],
+    [5, "Conjectura de Goldbath"],
 ]
 
 
